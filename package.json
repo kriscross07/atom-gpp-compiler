@@ -8,7 +8,7 @@
     "g++",
     "compile",
     "gcc",
-    "minigw"
+    "mingw"
   ],
   "engines": {
     "atom": ">=1.0.0"
