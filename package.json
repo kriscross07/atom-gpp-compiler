@@ -1,6 +1,6 @@
 {
   "name": "gpp-compiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compile and run c++ within atom. (You will need g++)",
   "repository": "https://github.com/kriscross07/atom-gpp-compiler",
   "keywords": [
