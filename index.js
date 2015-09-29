@@ -13,7 +13,7 @@ function compile(treePath){
   path=typeof treePath=='string'?treePath:editor.getPath();
   dir=path.split('\\');
   dir.pop();
-  dir=dir.join('\\');
+  dir=dir.join('\\')+'\\';
   file=path.split('\\').pop().split('.');
   file.pop();
   file=file.join('.');
