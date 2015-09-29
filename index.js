@@ -18,7 +18,6 @@ function compile(treePath){
   file.pop();
   file=file.join('.');
   ext='.'+path.split('\\').pop().split('.').pop();
-  console.log(path,dir,file,ext);
   exec('g++ '+file+ext+' -o '+file,{cwd:dir},function(err,stdout,stderr){
     if(stderr){
       fs.writeFile(dir+'compiling_error.txt',stderr);
@@ -29,6 +28,5 @@ function compile(treePath){
 }
 function treeCompile(e){
   var path=e.target.getAttribute('data-path');
-  console.log(path);
   compile(path);
 }
