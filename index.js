@@ -23,10 +23,14 @@ function compile(treePath){
       fs.writeFile(dir+'compiling_error.txt',stderr);
       atom.notifications.add('error',stderr.replace(/\n/g,'<br>'));
     }
-    else exec('start '+file,{cwd:dir});
+    else{
+      exec('start '+file,{cwd:dir});
+      fs.readFile(dir+'compiling_error.txt',function(err){
+        if(!err)fs.unlink(dir+'compiling_error.txt');
+      });
+    }
   });
 }
 function treeCompile(e){
-  var path=e.target.getAttribute('data-path');
-  compile(path);
+  compile(e.target.getAttribute('data-path'));
 }
