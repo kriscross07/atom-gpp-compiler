@@ -1,15 +1,15 @@
 {
-  "context-menu":{
-    "atom-text-editor":[
+  "context-menu": {
+    "atom-text-editor": [
       {
-        "label":"Compile and run with gpp-compiler",
-        "command":"gpp-compiler:compile"
+        "label": "Compile and run",
+        "command": "gpp-compiler:compile"
       }
     ],
-    ".tree-view .file>.name":[
+    ".tree-view .file > .name": [
       {
-        "label":"Compile and run",
-        "command":"gpp-compiler:treeCompile"
+        "label": "Compile and run",
+        "command": "gpp-compiler:treeCompile"
       }
     ]
   }
