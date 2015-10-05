@@ -6,6 +6,8 @@ You could probably configure this package to work with linux/mac, but currently 
 
 If you have problems updating, reinstall the package.
 
+If you update this package, you must restart atom for the package to work properly.
+
 ## What you need
 - g++ (you can install g++ by installing MinGW from [mingw.org](http://www.mingw.org/))
 - "C:\MinGW\bin\" added to path.
