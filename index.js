@@ -26,7 +26,7 @@ function compile(treePath){
     else{
       exec("start " + info.name, {cwd: info.dir});
       fs.readFile(info.dir + "/compiling_error.txt", function(err){
-        if(!err)fs.unlink(dir + "/compiling_error.txt");
+        if(!err)fs.unlink(info.dir + "/compiling_error.txt");
       });
     }
   });
