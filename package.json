@@ -1,6 +1,6 @@
 {
   "name": "gpp-compiler",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Compile and run c++ within atom. (You will need g++)",
   "author": "kriscross07",
   "main": "./index.js",
