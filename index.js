@@ -17,6 +17,7 @@ module.exports = {
 
 function compile(treePath){
   var editor = atom.workspace.getActiveTextEditor();
+  if(editor)editor.save();
   var info = parse(typeof(treePath) == "string" ? treePath : editor.getPath());
   exec("g++ " + info.base + " -o " + info.name, {cwd: info.dir}, function(err, stdout, stderr){
     if(stderr){
