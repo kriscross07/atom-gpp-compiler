@@ -1,13 +1,14 @@
 # gpp-compiler package
 
-This package allows you to press f5 to compile and run the selected .cpp file with g++.
+With this package, you can compile c++ from within Atom.
 
-You could probably configure this package to work with linux/mac, but currently there is no support for linux/mac.
-
-If you have problems updating, reinstall the package.
-
-If you update this package, you must restart atom for the package to work properly.
+To compile a file, press F5 while or right click the file in tree view and click "Compile and run"
 
 ## What you need
-- g++ (you can install g++ by installing MinGW from [mingw.org](http://www.mingw.org/))
-- "C:\MinGW\bin\" added to path.
+- g++
+
+If you're on Windows, you will need to add g++ to your PATH.
+
+If you're on Mac, google how to install g++.
+
+If you're on Linux, g++ should already be installed.
