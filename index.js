@@ -16,6 +16,12 @@ module.exports = {
       default: true,
       title: "Add compiling_error.txt",
       description: "Add a file named \"compiling_error.txt\" if compiling goes wrong."
+    },
+    gppOptions: {
+      type: "string",
+      default: "",
+      title: "g++ options",
+      description: "g++ command line options"
     }
   }
 };
@@ -26,11 +32,9 @@ function compile(treePath) {
     editor.save();
   }
   var info = parse(typeof treePath == "string" ? treePath : editor.getPath());
-  exec("g++ \"" + info.base + "\" -o \"" + info.name + "\"", {cwd: info.dir}, function(err, stdout, stderr) {
+  exec("g++ \"" + info.base + "\" -o \"" + info.name + "\" " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
     if (stderr) {
-      if (atom.notifications) {
-        atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
-      }
+      atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
         fs.writeFile(info.dir + "/compiling_error.txt", stderr);
       }
