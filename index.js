@@ -48,7 +48,7 @@ function compile(treePath) {
   if (atom.config.get("gpp-compiler.fileExtensnion") != "") {
     info.name += "." + atom.config.get("gpp-compiler.fileExtensnion");
   }
-  exec(esc(["g++", info.base, "-o", info.name, atom.config.get("gpp-compiler.gppOptions")]), {cwd: info.dir}, function(err, stdout, stderr) {
+  exec(esc(["g++", info.base, "-o", info.name]) + " " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
     if (stderr) {
       atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
