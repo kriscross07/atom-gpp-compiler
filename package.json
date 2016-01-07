@@ -6,7 +6,10 @@
     "name": "kriscross07"
   },
   "main": "./index.js",
-  "contributors": [],
+  "contributors": [
+    "kriscross07",
+    "PoVa"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kriscross07/atom-gpp-compiler.git"
@@ -27,22 +30,5 @@
   "bugs": {
     "url": "https://github.com/kriscross07/atom-gpp-compiler/issues"
   },
-  "homepage": "https://github.com/kriscross07/atom-gpp-compiler#readme",
-  "_id": "gpp-compiler@1.1.0",
-  "_shasum": "0e34bac45f040953226f10c04282e57a68924ecc",
-  "_resolved": "file:../d-11607-16207-1by21h1/package.tgz",
-  "_from": "../d-11607-16207-1by21h1/package.tgz",
-  "_atomModuleCache": {
-    "version": 1,
-    "dependencies": [],
-    "extensions": {
-      ".js": [
-        "index.js"
-      ],
-      ".json": [
-        "package.json"
-      ]
-    },
-    "folders": []
-  }
+  "homepage": "https://github.com/kriscross07/atom-gpp-compiler#readme"
 }

@@ -23,7 +23,7 @@ module.exports = {
       title: "Run after compile",
       description: "Run program after compiling is done"
     },
-    fileExtensnion: {
+    fileExtension: {
       type: "string",
       default: "",
       title: "File extension",
@@ -44,8 +44,8 @@ function compile(treePath) {
     editor.save();
   }
   var info = parse(typeof treePath == "string" ? treePath : editor.getPath());
-  if (atom.config.get("gpp-compiler.fileExtensnion") != "") {
-    info.name += "." + atom.config.get("gpp-compiler.fileExtensnion");
+  if (atom.config.get("gpp-compiler.fileExtension")) {
+    info.name += "." + atom.config.get("gpp-compiler.fileExtension");
   }
   exec("g++ \"" + info.base + "\" -o \"" + info.name + "\" " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
     if (stderr) {
