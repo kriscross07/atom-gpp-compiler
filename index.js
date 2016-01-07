@@ -2,6 +2,7 @@
 /* globals atom */
 "use strict";
 var exec = require("child_process").exec;
+var esc = require("shell-escape");
 var fs = require("fs");
 var parse = require("path").parse;
 
@@ -47,7 +48,7 @@ function compile(treePath) {
   if (atom.config.get("gpp-compiler.fileExtensnion") != "") {
     info.name += "." + atom.config.get("gpp-compiler.fileExtensnion");
   }
-  exec("g++ \"" + info.base + "\" -o \"" + info.name + "\" " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
+  exec(esc(["g++", info.base, "-o", info.name, atom.config.get("gpp-compiler.gppOptions")]), {cwd: info.dir}, function(err, stdout, stderr) {
     if (stderr) {
       atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
@@ -60,7 +61,7 @@ function compile(treePath) {
             cwd: info.dir
           });
         } else if (process.platform == "linux") {
-          exec("gnome-terminal -e \"./" + info.name.replace(/ /g, "\\ ") + "\"", {cwd: info.dir});
+          exec(esc(["xterm", "-hold", "-e", "./" + info.name]), {cwd: info.dir});
         } else if (process.platform == "darwin") {
           exec("open \"" + info.name.replace(/ /g, "\\ ") + "\"");
         }
