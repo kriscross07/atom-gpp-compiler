@@ -1,6 +1,6 @@
 {
   "name": "gpp-compiler",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Compile and run c++ within atom. (You will need g++)",
   "author": {
     "name": "kriscross07"
@@ -25,8 +25,8 @@
     "atom": ">=1.0.0"
   },
   "dependencies": {
-		"shell-escape": "0.2.0"
-	},
+    "shell-escape": "0.2.0"
+  },
   "readme": "# gpp-compiler package\n\nWith this package, you can compile and run c++ code from within Atom.\n\nTo compile a file, press F5 while or right click the file in tree view and click \"Compile and run\"\n\n## What you need\n- g++\n\nIf you're on Windows, you will need to add g++ to your PATH.\n\nIf you're on Mac, Google how to install g++.\n\nIf you're on Linux, g++ should already be installed.\n",
   "readmeFilename": "README.md",
   "bugs": {
