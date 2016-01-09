@@ -48,34 +48,47 @@ function compile(treePath) {
   if (atom.config.get("gpp-compiler.fileExtension")) {
     info.name += "." + atom.config.get("gpp-compiler.fileExtension");
   }
-  exec(esc(["g++", info.base, "-o", info.name]) + " " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
-    if (stderr) {
-      atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
-      if (atom.config.get("gpp-compiler.addCompilingErr")) {
-        fs.writeFile(info.dir + "/compiling_error.txt", stderr);
-      }
-    } else {
-      if (atom.config.get("gpp-compiler.runAfterCompile")) {
-        if (process.platform == "win32") {
-          exec("start \"" + info.name + "\" \"" + info.name + "\"", {
-            cwd: info.dir
-          });
-        } else if (process.platform == "linux") {
-          exec(esc(["xterm", "-hold", "-e", "./" + info.name]), {cwd: info.dir});
-        } else if (process.platform == "darwin") {
-          exec("open \"" + info.name.replace(/ /g, "\\ ") + "\"");
-        }
-        fs.readFile(info.dir + "/compiling_error.txt", function(err) {
-          if (!err) {
-            fs.unlink(info.dir + "/compiling_error.txt");
-          }
-        });
-      }
-      else {
-        atom.notifications.addSuccess("Compiling succesful");
-      }
+  if (process.platform == "win32") {
+    exec("g++ \"" + info.base + "\" -o \"" + info.name + "\" " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
+      onCompile(err, stdout, stderr, info);
+    });
+  } else {
+    exec(esc(["g++", info.base, "-o", info.name]) + " " + atom.config.get("gpp-compiler.gppOptions"), {cwd: info.dir}, function(err, stdout, stderr) {
+      onCompile(err, stdout, stderr, info);
+    });
+  }
+}
+
+function onCompile(err, stdout, stderr, info) {
+  if (err) {
+    throw err;
+  }
+  if (stderr) {
+    atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
+    if (atom.config.get("gpp-compiler.addCompilingErr")) {
+      fs.writeFile(info.dir + "/compiling_error.txt", stderr);
     }
-  });
+  } else {
+    if (atom.config.get("gpp-compiler.runAfterCompile")) {
+      if (process.platform == "win32") {
+        exec("start \"" + info.name + "\" \"" + info.name + "\"", {
+          cwd: info.dir
+        });
+      } else if (process.platform == "linux") {
+        exec(esc(["xterm", "-hold", "-e", "./" + info.name]), {cwd: info.dir});
+      } else if (process.platform == "darwin") {
+        exec("open \"" + info.name.replace(/ /g, "\\ ") + "\"");
+      }
+      fs.readFile(info.dir + "/compiling_error.txt", function(err) {
+        if (!err) {
+          fs.unlink(info.dir + "/compiling_error.txt");
+        }
+      });
+    }
+    else {
+      atom.notifications.addSuccess("Compiling succesful");
+    }
+  }
 }
 
 function treeCompile(e) {
