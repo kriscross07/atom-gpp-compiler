@@ -60,9 +60,6 @@ function compile(treePath) {
 }
 
 function onCompile(err, stdout, stderr, info) {
-  if (err) {
-    throw err;
-  }
   if (stderr) {
     atom.notifications.add("error", stderr.replace(/\n/g, "<br>"));
     if (atom.config.get("gpp-compiler.addCompilingErr")) {
