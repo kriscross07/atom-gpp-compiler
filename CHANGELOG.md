@@ -1,6 +1,7 @@
 ## 2.0.1
 * Added this changelog
 * Fixed indentation for `index.js`
+* Fixed bug where it would not launch compiled program on a Mac
 
 ## 2.0.0
 * Now you can pass multiple files to g++ using tree view

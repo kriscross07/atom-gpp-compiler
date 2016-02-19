@@ -83,7 +83,7 @@ function compile(e, files, info) {
             cwd: info.dir
           });
         } else if (process.platform == "darwin") {
-          child_process.spawn("open", info.name, {
+          child_process.spawn("open", [info.name], {
             cwd: info.dir
           });
         }
