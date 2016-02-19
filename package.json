@@ -1,26 +1,14 @@
 {
   "name": "gpp-compiler",
-  "version": "2.0.0",
-  "description": "Compile and run c++ within atom. (You will need g++)",
-  "author": {
-    "name": "kriscross07"
-  },
   "main": "./index.js",
+  "version": "2.0.0",
+  "description": "Compile and run c++ within Atom. (You will need g++)",
+  "author": "kriscross07",
   "contributors": [
-    {
-      "name": "kriscross07"
-    },
-    {
-      "name": "PoVa"
-    },
-    {
-      "name": "LinuxMercedes"
-    }
+    "kriscross07",
+    "PoVa",
+    "LinuxMercedes"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kriscross07/atom-gpp-compiler.git"
-  },
   "keywords": [
     "c++",
     "g++",
@@ -28,50 +16,9 @@
     "gcc",
     "mingw"
   ],
+  "repository": "https://github.com/kriscross07/atom-gpp-compiler",
   "engines": {
     "atom": ">=1.0.0"
   },
-  "dependencies": {},
-  "readme": "# gpp-compiler package\n\nWith this package, you can compile and run c++ code from within Atom.\n\nTo compile a file, press F5 while or right click the file in tree view and click \"Compile and run\"\n\n## What you need\n- g++\n\nIf you're on Windows, you will need to add g++ to your PATH.\n\nIf you're on Mac, Google how to install g++.\n\nIf you're on Linux, g++ should already be installed.\n",
-  "readmeFilename": "README.md",
-  "bugs": {
-    "url": "https://github.com/kriscross07/atom-gpp-compiler/issues"
-  },
-  "homepage": "https://github.com/kriscross07/atom-gpp-compiler#readme",
-  "_id": "gpp-compiler@1.2.2",
-  "_shasum": "38bebbbc4a57bb651d86dfab7e514c0e3dc434b0",
-  "_resolved": "file:../d-116118-9430-1nxnb7v/package.tgz",
-  "_from": "../d-116118-9430-1nxnb7v/package.tgz",
-  "_atomModuleCache": {
-    "version": 1,
-    "dependencies": [
-      {
-        "name": "shell-escape",
-        "version": "0.2.0",
-        "path": "node_modules/shell-escape/shell-escape.js"
-      }
-    ],
-    "extensions": {
-      ".js": [
-        "index.js",
-        "node_modules/shell-escape/shell-escape.js"
-      ],
-      ".json": [
-        "node_modules/shell-escape/package.json",
-        "package.json"
-      ]
-    },
-    "folders": [
-      {
-        "paths": [
-          "",
-          "keymaps",
-          "menus"
-        ],
-        "dependencies": {
-          "shell-escape": "0.2.0"
-        }
-      }
-    ]
-  }
+  "dependencies": {}
 }
