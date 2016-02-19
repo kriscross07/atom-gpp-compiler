@@ -3,10 +3,10 @@
     "atom-text-editor": [
       {
         "label": "Compile and run",
-        "command": "gpp-compiler:compile"
+        "command": "gpp-compiler:treeCompile"
       }
     ],
-    ".tree-view .file > .name": [
+    ".tree-view .file": [
       {
         "label": "Compile and run",
         "command": "gpp-compiler:treeCompile"
