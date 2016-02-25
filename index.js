@@ -75,7 +75,7 @@ function compile(e, files, info) {
     } else {
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
         if (process.platform == "win32") {
-          child_process.spawn("start", [info.name, info.name], {
+          child_process.exec("start " + escapeArg(info.name) + " " + escapeArg(info.name), {
             cwd: info.dir
           });
         } else if (process.platform == "linux") {
@@ -117,4 +117,8 @@ function treeCompile(e) {
 function f5Compile() {
   var file = atom.workspace.getActiveTextEditor().buffer.file.path;
   compile(null, [file], path.parse(file));
+}
+
+function escapeArg(arg){
+  return "\"" + arg + "\"";
 }
