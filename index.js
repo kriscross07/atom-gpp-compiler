@@ -127,7 +127,7 @@ function compile(e, files, info) {
       } else {
         atom.notifications.add("success", "Compiling successful");
       }
-      fs.readLine(path.join(info.dir, "compiling_error.txt"), function(err) {
+      fs.stat(path.join(info.dir, "compiling_error.txt"), function(err) {
         if (!err) {
           fs.unlink(path.join(info.dir, "compiling_error.txt"));
         }
