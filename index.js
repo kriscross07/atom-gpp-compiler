@@ -84,7 +84,7 @@ function compile(e, files, info) {
     if (code) {
       atom.notifications.add("error", stderr.replace(/\n/, ""));
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
-        fs.writeFile(path.join(info.dir, "compile_error.txt"), stderr);
+        fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
       }
     } else {
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
@@ -127,9 +127,9 @@ function compile(e, files, info) {
       } else {
         atom.notifications.add("success", "Compiling successful");
       }
-      fs.readFile(info.dir + "/compiling_error.txt", function(err) {
+      fs.readLine(path.join(info.dir, "compiling_error.txt"), function(err) {
         if (!err) {
-          fs.unlink(info.dir + "/compiling_error.txt");
+          fs.unlink(path.join(info.dir, "compiling_error.txt"));
         }
       });
     }
