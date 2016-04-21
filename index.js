@@ -8,20 +8,17 @@ var path = require("path");
 
 module.exports = {
   activate: () => {
-    atom.commands.add("atom-text-editor", "gpp-compiler:f5Compile", f5Compile);
-    atom.commands.add(
-      ".tree-view .file",
-      "gpp-compiler:treeCompile",
-      treeCompile
-    );
+    atom.commands.add("atom-text-editor", "gpp-compiler:compileGpp", compileGpp);
+    atom.commands.add(".tree-view .file", "gpp-compiler:treeCompileGpp", treeCompileGpp);
+    atom.commands.add("atom-text-editor", "gpp-compiler:compileGcc", compileGcc);
+    atom.commands.add(".tree-view .file", "gpp-compiler:treeCompileGcc", treeCompileGcc);
   },
   config: {
     addCompilingErr: {
       title: "Add compiling_error.txt",
       type: "boolean",
       default: true,
-      description: "Add a file named \"compiling_error.txt\" if compiling" +
-                   " goes wrong"
+      description: "Add a file named \"compiling_error.txt\" if compiling goes wrong"
     },
     runAfterCompile: {
       title: "Run after compile",
@@ -53,7 +50,7 @@ if (process.platform == "linux") {
   };
 }
 
-function compile(e, files, info) {
+function compile(command, files, info) {
   var editor = atom.workspace.getActiveTextEditor();
   var args = [];
   if (editor) {
@@ -73,7 +70,7 @@ function compile(e, files, info) {
       args.push(userArgs[i]);
     }
   }
-  var child = child_process.spawn("g++", args, {
+  var child = child_process.spawn(command, args, {
     cwd: info.dir
   });
   var stderr = "";
@@ -89,24 +86,15 @@ function compile(e, files, info) {
     } else {
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
         if (process.platform == "win32") {
-          child_process.exec("start " +
-                             escapeArg(info.name) +
-                             " " +
-                             escapeArg(info.name), {
+          child_process.exec("start " + escapeArg(info.name) + " " + escapeArg(info.name), {
             cwd: info.dir
           });
         } else if (process.platform == "linux") {
           var terminal = atom.config.get("gpp-compiler.linuxTerminal");
           if (terminal == "GNOME Terminal") {
-            child_process.spawn("gnome-terminal", ["--command", path.join(
-              info.dir,
-              info.name
-            )]);
+            child_process.spawn("gnome-terminal", ["--command", path.join(info.dir, info.name)]);
           } else if (terminal == "Konsole") {
-            child_process.spawn("konsole", ["--hold", "-e", path.join(
-              info.dir,
-              info.name
-            )]);
+            child_process.spawn("konsole", ["--hold", "-e", path.join(info.dir, info.name)]);
           } else if (terminal == "xfce4-terminal") {
             child_process.spawn("xfce4-terminal", [
               "--hold",
@@ -114,10 +102,7 @@ function compile(e, files, info) {
               path.join(info.dir, info.name),
             ]);
           } else {
-            child_process.spawn("xterm", ["-hold", "-e", path.join(
-              info.dir,
-              info.name
-            )]);
+            child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)]);
           }
         } else if (process.platform == "darwin") {
           child_process.spawn("open", [info.name], {
@@ -136,7 +121,25 @@ function compile(e, files, info) {
   });
 }
 
-function treeCompile(e) {
+function compileGpp() {
+  var file = atom.workspace.getActiveTextEditor().buffer.file.path;
+  compile("g++", [file], path.parse(file));
+}
+
+function treeCompileGpp(e) {
+  treeCompile(e, "g++");
+}
+
+function compileGcc() {
+  var file = atom.workspace.getActiveTextEditor().buffer.file.path;
+  compile("gcc", [file], path.parse(file));
+}
+
+function treeCompileGcc(e) {
+  treeCompile(e, "gcc");
+}
+
+function treeCompile(e, command) {
   var names = document.querySelectorAll(".tree-view .file.selected > .name");
   var files = [];
   var element = e.target;
@@ -148,12 +151,7 @@ function treeCompile(e) {
       files.push(names[i].getAttribute("data-path"));
     }
   }
-  compile(null, files, path.parse(element.getAttribute("data-path")));
-}
-
-function f5Compile() {
-  var file = atom.workspace.getActiveTextEditor().buffer.file.path;
-  compile(null, [file], path.parse(file));
+  compile(command, files, path.parse(element.getAttribute("data-path")));
 }
 
 function escapeArg(arg){

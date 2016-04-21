@@ -1,14 +1,13 @@
-# gpp-compiler package
+# gpp-compiler
 
-With this package, you can compile and run c++ code from within Atom.
+This Atom package allows you to compile and run C++ and C code within the editor.
 
-To compile a file, press F5 while or right click the file in tree view and click "Compile and run"
+To compile C++, press F5 or right click the file in tree view and click `Compile and Run C++`.
 
-## What you need
-- g++
+To compile C, press F6 or right click the file in tree view and click `Compile and Run C`.
 
-If you're on Windows, you will need to add g++ to your PATH.
+On Linux, g++ and gcc probably come with your distribution. Run `which g++ gcc && echo You have g++ and gcc. || echo You don\'t have g++ and gcc.`.
 
-If you're on Mac, Google how to install g++.
+On Windows, you'll need to install [MinGW](http://www.mingw.org/) and [add it to your PATH](http://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/).
 
-If you're on Linux, g++ should already be installed.
+On a Mac, you'll need to install [XCode](https://developer.apple.com/xcode/).

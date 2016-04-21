@@ -2,14 +2,22 @@
   "context-menu": {
     "atom-text-editor": [
       {
-        "label": "Compile and run",
-        "command": "gpp-compiler:treeCompile"
+        "label": "Compile and Run C++",
+        "command": "gpp-compiler:compileGpp"
+      },
+      {
+        "label": "Compile and Run C",
+        "command": "gpp-compiler:compileGcc"
       }
     ],
     ".tree-view .file": [
       {
-        "label": "Compile and run",
-        "command": "gpp-compiler:treeCompile"
+        "label": "Compile and Run C++",
+        "command": "gpp-compiler:treeCompileGpp"
+      },
+      {
+        "label": "Compile and Run C",
+        "command": "gpp-compiler:treeCompileGcc"
       }
     ]
   }

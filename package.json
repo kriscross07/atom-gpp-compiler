@@ -2,23 +2,26 @@
   "name": "gpp-compiler",
   "main": "./index.js",
   "version": "2.1.0",
-  "description": "Compile and run c++ within Atom. (You will need g++)",
-  "author": "kriscross07",
+  "description": "Compile and run C++ within Atom. (You will need g++)",
+  "keywords": [
+    "compile",
+    "c++",
+    "c",
+    "g++",
+    "gcc",
+    "mingw",
+    "xcode"
+  ],
+  "repository": "https://github.com/kriscross07/atom-gpp-compiler",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  },
   "contributors": [
     "kriscross07",
     "PoVa",
     "LinuxMercedes"
-  ],
-  "keywords": [
-    "c++",
-    "g++",
-    "compile",
-    "gcc",
-    "mingw"
-  ],
-  "repository": "https://github.com/kriscross07/atom-gpp-compiler",
-  "engines": {
-    "atom": ">=1.0.0"
-  },
-  "dependencies": {}
+  ]
 }

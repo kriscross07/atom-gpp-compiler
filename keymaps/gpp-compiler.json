@@ -1,5 +1,6 @@
 {
   "atom-text-editor": {
-    "f5": "gpp-compiler:f5Compile"
+    "f5": "gpp-compiler:compileGpp",
+    "f6": "gpp-compiler:compileGcc"
   }
 }
