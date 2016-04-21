@@ -1,7 +1,7 @@
 {
   "name": "gpp-compiler",
   "main": "./index.js",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Compile and run C++ within Atom. (You will need g++)",
   "keywords": [
     "compile",
@@ -17,8 +17,7 @@
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "author": "kriscross07",
   "contributors": [
     "kriscross07",
