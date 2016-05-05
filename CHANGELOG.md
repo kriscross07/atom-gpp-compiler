@@ -1,3 +1,20 @@
+## 2.2.2
+* Added comments to index.js.
+* Finally updated CHANGELOG.md.
+
+## 2.2.1
+* Edited the package's description to include information about C.
+
+## 2.2.0
+* Added support for C.
+
+## 2.1.0
+* Added support for changing linux terminal.
+* Fixed a few typos.
+
+## 2.0.2
+* Fixed bug where it wouldn't launch compiled exe on Windows.
+
 ## 2.0.1
 * Added this changelog
 * Fixed indentation for `index.js`
