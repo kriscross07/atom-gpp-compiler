@@ -13,13 +13,13 @@ module.exports = {
   // function that gets called on package activate
   activate: () => {
     // make gpp-compiler:compileGpp (bound to F5) call compileGpp()
-    atom.commands.add("atom-text-editor", "gpp-compiler:compileGpp", compileGpp);
+    atom.commands.add("atom-text-editor", "gpp-compiler:compile-gpp", compileGpp);
     // make clicking "Compile and Run C++" in tree view call treeCompileGpp()
-    atom.commands.add(".tree-view .file", "gpp-compiler:treeCompileGpp", treeCompileGpp);
+    atom.commands.add(".tree-view .file", "gpp-compiler:tree-compile-gpp", treeCompileGpp);
     // make gpp-compiler:compileGcc (bound to F5) call compileGcc()
-    atom.commands.add("atom-text-editor", "gpp-compiler:compileGcc", compileGcc);
+    atom.commands.add("atom-text-editor", "gpp-compiler:compile-gcc", compileGcc);
     // make clicking "Compile and Run C" in tree view call treeCompileGcc()
-    atom.commands.add(".tree-view .file", "gpp-compiler:treeCompileGcc", treeCompileGcc);
+    atom.commands.add(".tree-view .file", "gpp-compiler:tree-compile-gcc", treeCompileGcc);
   },
   // options
   config: {

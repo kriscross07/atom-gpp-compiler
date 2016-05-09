@@ -1,3 +1,6 @@
+## 2.2.3
+* According to Atom's documentation, all command registers should be lowercase and separated by hypens.
+
 ## 2.2.2
 * Added comments to index.js.
 * Finally updated CHANGELOG.md.
