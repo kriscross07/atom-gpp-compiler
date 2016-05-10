@@ -156,34 +156,34 @@ function compile(command, files, info) {
     } else {
       // if the user wants the program to run after compilation, run it in their favorite terminal
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
+        // options to tell child_process.spawn() to run in the directory of the program
+        let options = {
+          cwd: info.dir
+        };
         // if the platform is Windows, run execute start (which is a shell builtin, so we can't
         // use child_process.spawn), which simulates double clicking the program
         if (process.platform == "win32") {
-          child_process.exec("start " + escapeArg(info.name) + " " + escapeArg(info.name), {
-            cwd: info.dir
-          });
+          child_process.exec("start " + escapeArg(info.name) + " " + escapeArg(info.name), options);
         } else if (process.platform == "linux") {
           // if the platform is linux, spawn the program in the user set terminal
           var terminal = atom.config.get("gpp-compiler.linuxTerminal");
           if (terminal == "GNOME Terminal") {
-            child_process.spawn("gnome-terminal", ["--command", path.join(info.dir, info.name)]);
+            child_process.spawn("gnome-terminal", ["--command", path.join(info.dir, info.name)], options);
           } else if (terminal == "Konsole") {
-            child_process.spawn("konsole", ["--hold", "-e", path.join(info.dir, info.name)]);
+            child_process.spawn("konsole", ["--hold", "-e", path.join(info.dir, info.name)], options);
           } else if (terminal == "xfce4-terminal") {
             child_process.spawn("xfce4-terminal", [
               "--hold",
               "--command",
               path.join(info.dir, info.name),
-            ]);
+            ], options);
           } else {
-            child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)]);
+            child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)], options);
           }
         } else if (process.platform == "darwin") {
           // if the platform is mac, spawn open, which does the same thing as Windows' start, but
           // is not a builtin, so we can child_process.spawn it
-          child_process.spawn("open", [info.name], {
-            cwd: info.dir
-          });
+          child_process.spawn("open", [info.name], options);
         }
       } else {
         // if the user doesn't want the program to run after compilation, give them an alert
