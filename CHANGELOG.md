@@ -1,3 +1,6 @@
+## 2.2.4
+* Warn user if they try to compile without saving the file ([farnabaz](https://github.com/farnabaz))
+
 ## 2.2.3
 * According to Atom's documentation, all command registers should be lowercase and separated by hypens.
 
@@ -30,12 +33,12 @@
 * Fixed bug that would fail to execute g++ on Windows
 
 ## 1.2.1
-* Now uses XTerm on Linux (LinuxMercedes)
-* Properly escape arguments on \*nix systems (LinuxMercedes)
+* Now uses XTerm on Linux ([LinuxMercedes](https://github.com/LinuxMercedes))
+* Properly escape arguments on \*nix systems ([LinuxMercedes](https://github.com/LinuxMercedes))
 
 ## 1.2.0
-* Added option to toggle running after compilation (PoVa)
-* Added option to changed output extension (PoVa)
+* Added option to toggle running after compilation ([PoVa](https://github.com/PoVa))
+* Added option to changed output extension ([PoVa](https://github.com/PoVa))
 
 ## 1.1.0
 * Added option to add g++ command line options

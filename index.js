@@ -2,11 +2,8 @@
 /* globals atom */
 "use strict";
 
-// module to spawn child processes
 var child_process = require("child_process");
-// module to modify the file system
 var fs = require("fs");
-// module to parse paths
 var path = require("path");
 
 module.exports = {
@@ -63,11 +60,11 @@ if (process.platform == "linux") {
 // call compile() to compile C++
 function compileGpp() {
   var file = atom.workspace.getActiveTextEditor().buffer.file;
-  if (file != null) {
-    var path = file.path;
-    compile("g++", [path], path.parse(path));
+  if (file) {
+    let filePath = file.path;
+    compile("g++", [filePath], path.parse(filePath));
   } else {
-    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found");
+    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found.<br/>Save before compiling.");
   }
 }
 
@@ -79,11 +76,11 @@ function treeCompileGpp(e) {
 // call compile() to compile C
 function compileGcc() {
   var file = atom.workspace.getActiveTextEditor().buffer.file;
-  if (file != null) {
-    var path = file.path;
-    compile("gcc", [path], path.parse(path));
+  if (file) {
+    let filePath = file.path;
+    compile("gcc", [filePath], path.parse(filePath));
   } else {
-    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found");
+    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found.<br/>Save before compiling.");
   }
 }
 
