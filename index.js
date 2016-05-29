@@ -62,8 +62,13 @@ if (process.platform == "linux") {
 
 // call compile() to compile C++
 function compileGpp() {
-  var file = atom.workspace.getActiveTextEditor().buffer.file.path;
-  compile("g++", [file], path.parse(file));
+  var file = atom.workspace.getActiveTextEditor().buffer.file;
+  if (file != null) {
+    var path = file.path;
+    compile("g++", [path], path.parse(path));
+  } else {
+    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found");
+  }
 }
 
 // call treeCompile() to compile C++
@@ -73,8 +78,13 @@ function treeCompileGpp(e) {
 
 // call compile() to compile C
 function compileGcc() {
-  var file = atom.workspace.getActiveTextEditor().buffer.file.path;
-  compile("gcc", [file], path.parse(file));
+  var file = atom.workspace.getActiveTextEditor().buffer.file;
+  if (file != null) {
+    var path = file.path;
+    compile("gcc", [path], path.parse(path));
+  } else {
+    atom.notifications.add("error", "<strong>Compiling error</strong>: File not found");
+  }
 }
 
 // call treeCompile() to compile C
