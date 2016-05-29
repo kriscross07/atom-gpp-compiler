@@ -130,6 +130,7 @@ function compile(command, files, info) {
     info.name += "." + atom.config.get("gpp-compiler.fileExtension");
   }
   // extend arguments and files
+  // TODO: test if `args = [args, ...files];` works
   for (let i in files) {
     args.push(files[i]);
   }
