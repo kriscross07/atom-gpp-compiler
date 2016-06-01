@@ -1,5 +1,6 @@
 ## 2.2.4
 * Warn user if they try to compile without saving the file ([farnabaz](https://github.com/farnabaz))
+* Hold command prompt after running program on Windows.
 
 ## 2.2.3
 * According to Atom's documentation, all command registers should be lowercase and separated by hypens.

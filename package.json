@@ -2,7 +2,7 @@
   "name": "gpp-compiler",
   "main": "./index.js",
   "version": "2.2.3",
-  "description": "Compile and run C and C++ within Atom. (You will need g++.)",
+  "description": "Compile and run C and C++ within Atom.",
   "keywords": [
     "compile",
     "c++",
@@ -24,5 +24,8 @@
     "PoVa",
     "LinuxMercedes",
     "farnabaz"
-  ]
+  ],
+  "scripts": {
+    "test": "eslint index.js"
+  }
 }

@@ -2,9 +2,9 @@
 /* globals atom */
 "use strict";
 
-var child_process = require("child_process");
-var fs = require("fs");
-var path = require("path");
+const child_process = require("child_process");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = {
   // function that gets called on package activate
@@ -57,51 +57,51 @@ if (process.platform == "linux") {
   };
 }
 
-// call compile() to compile C++
+// wrapper for compile()
 function compileGpp() {
-  var file = atom.workspace.getActiveTextEditor().buffer.file;
+  const file = atom.workspace.getActiveTextEditor().buffer.file;
   if (file) {
-    let filePath = file.path;
+    const filePath = file.path;
     compile("g++", [filePath], path.parse(filePath));
   } else {
     atom.notifications.add("error", "<strong>Compiling error</strong>: File not found.<br/>Save before compiling.");
   }
 }
 
-// call treeCompile() to compile C++
+// Wrapper for treeCompile() to compile C++.
 function treeCompileGpp(e) {
   treeCompile(e, "g++");
 }
 
-// call compile() to compile C
+// Wrapper for compile() to compile C.
 function compileGcc() {
-  var file = atom.workspace.getActiveTextEditor().buffer.file;
+  const file = atom.workspace.getActiveTextEditor().buffer.file;
   if (file) {
-    let filePath = file.path;
+    const filePath = file.path;
     compile("gcc", [filePath], path.parse(filePath));
   } else {
     atom.notifications.add("error", "<strong>Compiling error</strong>: File not found.<br/>Save before compiling.");
   }
 }
 
-// call treeCompile() to compile C
+// Wrapper for treeCompile() to compile C.
 function treeCompileGcc(e) {
   treeCompile(e, "gcc");
 }
 
-// call compile() to compile C++ or C
+// Wrapper compile() to compile C or C++.
 function treeCompile(e, command) {
   // array of all selected tree view files
-  var names = document.querySelectorAll(".tree-view .file.selected > .name");
+  const names = document.querySelectorAll(".tree-view .file.selected > .name");
   // array of files to compile
-  var files = [];
+  const files = [];
   // file right clicked on
-  var element = e.target;
+  let element = e.target;
   if (element.classList.contains("file")) {
     element = element.firstChild;
   }
   // loop through every selected file and push them to files if they are an HTML element
-  for (let i in names) {
+  for (const i in names) {
     if (names[i] instanceof HTMLElement) {
       files.push(names[i].getAttribute("data-path"));
     }
@@ -110,46 +110,42 @@ function treeCompile(e, command) {
   compile(command, files, path.parse(element.getAttribute("data-path")));
 }
 
-// surround argument with double quotes (only called if platform is Windows)
-function escapeArg(arg){
-  return "\"" + arg + "\"";
-}
-
-// call gcc or g++ to compile files and run the compiled files
+// Spawn gcc or g++ to compile files and possibly run the compiled files.
 function compile(command, files, info) {
   // store the current editor in the editor variable
-  var editor = atom.workspace.getActiveTextEditor();
+  const editor = atom.workspace.getActiveTextEditor();
   // array of arguments to pass to gcc or g++
-  var args = [];
+  const args = [];
   // if the user has an editor open, save it
   if (editor) {
     editor.save();
   }
   // set custom output file extension
   if (atom.config.get("gpp-compiler.fileExtension")) {
-    info.name += "." + atom.config.get("gpp-compiler.fileExtension");
+    // info.name += "." + atom.config.get("gpp-compiler.fileExtension");
+    info.name += `.${atom.config.get("gpp-compiler.fileExtension")}`;
   }
   // extend arguments and files
   // TODO: test if `args = [args, ...files];` works
-  for (let i in files) {
+  for (const i in files) {
     args.push(files[i]);
   }
   // set output filename
   args.push("-o");
   args.push(info.name);
   // add custom gcc/g++ arguments
-  var userArgs = atom.config.get("gpp-compiler.gppOptions").split(" ");
-  for (let i in userArgs) {
+  const userArgs = atom.config.get("gpp-compiler.gppOptions").split(" ");
+  for (const i in userArgs) {
     if (userArgs[i]) {
       args.push(userArgs[i]);
     }
   }
   // spawn gcc/g++ with the working directory of info.dir
-  var child = child_process.spawn(command, args, {
+  const child = child_process.spawn(command, args, {
     cwd: info.dir
   });
   // if the compile exits with a non-zero status, alert the user the error
-  var stderr = "";
+  let stderr = "";
   child.stderr.on("data", (data) => {
     stderr += data;
   });
@@ -165,16 +161,14 @@ function compile(command, files, info) {
       // if the user wants the program to run after compilation, run it in their favorite terminal
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
         // options to tell child_process.spawn() to run in the directory of the program
-        let options = {
+        const options = {
           cwd: info.dir
         };
         // if the platform is Windows, run execute start (which is a shell builtin, so we can't
         // use child_process.spawn), which simulates double clicking the program
-        if (process.platform == "win32") {
-          child_process.exec("start " + escapeArg(info.name) + " " + escapeArg(info.name), options);
-        } else if (process.platform == "linux") {
+        if (process.platform == "linux") {
           // if the platform is linux, spawn the program in the user set terminal
-          var terminal = atom.config.get("gpp-compiler.linuxTerminal");
+          const terminal = atom.config.get("gpp-compiler.linuxTerminal");
           if (terminal == "GNOME Terminal") {
             child_process.spawn("gnome-terminal", ["--command", path.join(info.dir, info.name)], options);
           } else if (terminal == "Konsole") {
@@ -183,11 +177,14 @@ function compile(command, files, info) {
             child_process.spawn("xfce4-terminal", [
               "--hold",
               "--command",
-              path.join(info.dir, info.name),
+              path.join(info.dir, info.name)
             ], options);
           } else {
             child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)], options);
           }
+        } else if (process.platform == "win32") {
+          // child_process.exec(`start "${info.name}" "${info.name}"`);
+          child_process.exec(`start "${info.name}" cmd /C "${info.name} & echo. & pause"`);
         } else if (process.platform == "darwin") {
           // if the platform is mac, spawn open, which does the same thing as Windows' start, but
           // is not a builtin, so we can child_process.spawn it
