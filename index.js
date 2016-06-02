@@ -68,12 +68,12 @@ function compileGpp() {
   }
 }
 
-// Wrapper for treeCompile() to compile C++.
+// wrapper for treeCompile() to compile C++
 function treeCompileGpp(e) {
   treeCompile(e, "g++");
 }
 
-// Wrapper for compile() to compile C.
+// wrapper for compile() to compile C
 function compileGcc() {
   const file = atom.workspace.getActiveTextEditor().buffer.file;
   if (file) {
@@ -84,12 +84,12 @@ function compileGcc() {
   }
 }
 
-// Wrapper for treeCompile() to compile C.
+// wrapper for treeCompile() to compile C
 function treeCompileGcc(e) {
   treeCompile(e, "gcc");
 }
 
-// Wrapper compile() to compile C or C++.
+// wrapper compile() to compile C or C++
 function treeCompile(e, command) {
   // array of all selected tree view files
   const names = document.querySelectorAll(".tree-view .file.selected > .name");
@@ -110,7 +110,7 @@ function treeCompile(e, command) {
   compile(command, files, path.parse(element.getAttribute("data-path")));
 }
 
-// Spawn gcc or g++ to compile files and possibly run the compiled files.
+// spawn gcc or g++ to compile files and possibly run the compiled files
 function compile(command, files, info) {
   // store the current editor in the editor variable
   const editor = atom.workspace.getActiveTextEditor();
@@ -174,17 +174,13 @@ function compile(command, files, info) {
           } else if (terminal == "Konsole") {
             child_process.spawn("konsole", ["--hold", "-e", path.join(info.dir, info.name)], options);
           } else if (terminal == "xfce4-terminal") {
-            child_process.spawn("xfce4-terminal", [
-              "--hold",
-              "--command",
-              path.join(info.dir, info.name)
-            ], options);
+            child_process.spawn("xfce4-terminal", ["--hold", "--command", path.join(info.dir, info.name)], options);
           } else {
             child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)], options);
           }
         } else if (process.platform == "win32") {
           // child_process.exec(`start "${info.name}" "${info.name}"`);
-          child_process.exec(`start "${info.name}" cmd /C "${info.name} & echo. & pause"`);
+          child_process.exec(`start "${info.name}" cmd /C "${info.name} & echo. & pause"`, options);
         } else if (process.platform == "darwin") {
           // if the platform is mac, spawn open, which does the same thing as Windows' start, but
           // is not a builtin, so we can child_process.spawn it
