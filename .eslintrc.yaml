@@ -27,7 +27,6 @@ rules:
   dot-notation: error
   no-alert: error
   no-caller: error
-  no-else-return: error
   no-empty-function: error
   no-eq-null: error
   no-extend-native: error
@@ -60,14 +59,13 @@ rules:
   no-useless-escape: error
   no-void: error
   no-with: error
-  wrap-iife: error
+  wrap-iife:
+    - error
+    - inside
   yoda: error
-  strict: error
   no-label-var: error # untested
   no-shadow-restricted-names: error
   no-undef-init: error
-  callback-return: error # untested
-  global-require: error
   handle-callback-err: error # untested
   no-mixed-requires: error # untested
   no-new-require: error
@@ -99,7 +97,7 @@ rules:
     - error
     - max: 1
       maxEOF: 0
-      maxBOF: 1
+      maxBOF: 0
   no-negated-condition: error
   no-new-object: error
   no-spaced-func: error
