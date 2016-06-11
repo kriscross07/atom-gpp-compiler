@@ -179,7 +179,7 @@ function compile(command, files, info) {
             child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)], options);
           }
         } else if (process.platform == "win32") {
-          child_process.exec(`start "${path.join(info.dir, info.name)}" cmd /C "${info.name} & echo. & pause"`);
+          child_process.exec(`start "${info.name}" cmd /C "${path.join(info.dir, info.name)} & echo. & pause"`);
         } else if (process.platform == "darwin") {
           // if the platform is mac, spawn open, which does the same thing as Windows' start, but
           // is not a builtin, so we can child_process.spawn it
