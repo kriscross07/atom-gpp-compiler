@@ -53,7 +53,7 @@ if (process.platform == "linux") {
     title: "Linux terminal",
     type: "string",
     default: "XTerm",
-    enum: ["XTerm", "GNOME Terminal", "Konsole", "xfce4-terminal"]
+    enum: ["XTerm", "GNOME Terminal", "Konsole", "xfce4-terminal", "pantheon-terminal"]
   };
 }
 
@@ -164,19 +164,22 @@ function compile(command, files, info) {
         const options = {
           cwd: info.dir
         };
-        // if the platform is Windows, run execute start (which is a shell builtin, so we can't
-        // use child_process.spawn), which simulates double clicking the program
+        // if the platform is Windows, run start (which is a shell builtin, so we can't
+        // use child_process.spawn), which spawns a new instance of cmd to run the program
         if (process.platform == "linux") {
           // if the platform is linux, spawn the program in the user set terminal
           const terminal = atom.config.get("gpp-compiler.linuxTerminal");
+          const file = path.join(info.dir, info.name);
           if (terminal == "GNOME Terminal") {
-            child_process.spawn("gnome-terminal", ["--command", path.join(info.dir, info.name)], options);
+            child_process.spawn("gnome-terminal", ["--command", file], options);
           } else if (terminal == "Konsole") {
-            child_process.spawn("konsole", ["--hold", "-e", path.join(info.dir, info.name)], options);
+            child_process.spawn("konsole", ["--hold", "-e", file], options);
           } else if (terminal == "xfce4-terminal") {
-            child_process.spawn("xfce4-terminal", ["--hold", "--command", path.join(info.dir, info.name)], options);
+            child_process.spawn("xfce4-terminal", ["--hold", "--command", file], options);
+          } else if (terminal == "pantheon-terminal") {
+            child_process.spawn("pantheon-terminal", ["-e", file], options);
           } else {
-            child_process.spawn("xterm", ["-hold", "-e", path.join(info.dir, info.name)], options);
+            child_process.spawn("xterm", ["-hold", "-e", file], options);
           }
         } else if (process.platform == "win32") {
           child_process.exec(`start "${info.name}" cmd /C "${path.join(info.dir, info.name)} & echo. & pause"`);
