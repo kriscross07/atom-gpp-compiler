@@ -1,143 +1,79 @@
-extends: eslint:recommended
-parseOptions:
+extends: 
+  - eslint:all
+parserOptions:
   ecmaVersion: 6
+  ecmaFeatures:
+    globalReturn: true
+    jsx: true
 env:
   browser: true
   node: true
   es6: true
+  mocha: true
+  jquery: true
   nashorn: true
   greasemonkey: true
-  jquery: true
-  mocha: true
 rules:
-  no-console: off
-  no-constant-condition: off
-  no-debugger: off
-  no-empty: off
-  no-extra-parens: error
-  valid-jsdoc: error
-  accessor-pairs: error
-  array-callback-return: error
-  block-scoped-var: error
-  curly: error
-  dot-location: error
-  dot-notation: error
-  no-alert: error
-  no-caller: error
-  no-empty-function: error
-  no-eq-null: error
-  no-extend-native: error
-  no-extra-bind: error
-  no-extra-label: error
-  no-floating-decimal: error
-  no-implied-eval: error
-  no-iterator: error
-  no-lone-blocks: error
-  no-multi-spaces: error
-  no-multi-str: error
-  no-native-reassign: error
-  no-new: error
-  no-new-func: error
-  no-new-wrappers: error
-  no-octal-escape: error
-  no-proto: error
-  no-return-assign: error
-  no-script-url: error
-  no-self-compare: error
-  no-sequences: error
-  no-throw-literal: error
-  no-unmodified-loop-condition: error
-  no-unused-expressions: error
-  no-useless-call: error
-  no-useless-concat: error
-  no-useless-escape: error
-  no-with: error
-  wrap-iife:
-    - error
-    - inside
-  yoda: error
-  no-label-var: error # untested
-  no-shadow-restricted-names: error
-  no-undef-init: error
-  handle-callback-err: error # untested
-  no-mixed-requires: error # untested
-  no-new-require: error
-  no-path-concat: error
-  # no-sync: error
-  array-bracket-spacing: error
-  block-spacing: error
-  brace-style: error
-  comma-spacing: error
-  comma-style: error
-  computed-property-spacing: error
-  eol-last: error
-  func-style:
-    - error
-    - declaration
   indent:
     - error
     - 2
     - SwitchCase: 1
-  key-spacing: error
-  keyword-spacing: error
-  linebreak-style: error
-  max-statements-per-line: error # untested
-  new-cap: error
-  new-parens: error
-  no-inline-comments: error
-  no-lonely-if: error
-  no-multiple-empty-lines:
-    - error
-    - max: 1
-      maxEOF: 0
-      maxBOF: 0
-  no-negated-condition: error
-  no-new-object: error
-  no-spaced-func: error
-  no-trailing-spaces: error
-  no-unneeded-ternary: error
-  no-whitespace-before-property: error
-  object-curly-spacing: error
-  one-var:
-    - error
-    - never
-  operator-assignment: error
-  quote-props:
-    - error
-    - as-needed
-  quotes: error
-  semi: error
-  semi-spacing: error
-  space-before-blocks: error
   space-before-function-paren:
     - error
     - never
-  space-in-parens: error
-  space-infix-ops: error # untested
-  space-unary-ops:
+  padded-blocks:
     - error
-    - words: true
-      nonwords: false
-  spaced-comment: error
-  arrow-body-style: error # untested
-  arrow-parens: error
-  arrow-spacing: error
-  generator-star-spacing:
+    - never
+  one-var:
     - error
-    - after
-  no-confusing-arrow: error
-  no-duplicate-imports: error # untested
-  no-useless-computed-key: error
-  no-useless-constructor: error # untested
-  no-useless-rename: error
-  no-var: error
-  object-shorthand: error
-  prefer-arrow-callback: error
-  prefer-const: error
-  prefer-reflect: error # untested
-  prefer-rest-params: error
-  prefer-spread: error
-  prefer-template: error
-  require-yield: error # untested
-  template-curly-spacing: error
-  yield-star-spacing: error # untested
+    - never
+  id-length: off
+  no-magic-numbers: off
+  quote-props:
+    - error
+    - as-needed
+  object-curly-newline: off
+  no-extra-parens: off
+  func-names: off
+  no-console: off
+  max-len: off
+  max-lines: off
+  no-use-before-define:
+    - error
+    - functions: false
+  max-statements: off
+  func-style:
+    - error
+    - declaration
+  require-jsdoc: off
+  no-ternary: off
+  no-shadow: off
+  consistent-return: off
+  camelcase: off
+  no-constant-condition:
+    - error
+    - checkLoops: false
+  no-plusplus: off
+  guard-for-in: off
+  no-warning-comments: off
+  no-multiple-empty-lines:
+    - error
+    - max: 1
+  no-loop-func: off
+  no-else-return: off
+  newline-per-chained-call: off
+  default-case: off
+  no-inner-declarations: off
+  no-param-reassign: off
+  no-sync: off
+  no-implicit-coercion:
+    - error
+    - boolean: false
+  no-bitwise: off
+  no-void: off
+  complexity: off
+  max-depth:
+    - error
+    - max: 10
+
+  react/no-danger: off
