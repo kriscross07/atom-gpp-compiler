@@ -5,6 +5,7 @@
 const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 module.exports = {
   activate() {
@@ -12,10 +13,10 @@ module.exports = {
       commands.
       add("atom-text-editor", {
         "gpp-compiler:compile": () => {
-          compileFile(getCommand(getFileType()));
+          compileFile(getFileType());
         },
         "gpp-compiler:gdb": () => {
-          compileFile(getCommand(getFileType()), [
+          compileFile(getFileType(), [
             "-g"
           ], true);
         }
@@ -45,12 +46,17 @@ module.exports = {
       default: "",
       description: "Extension of compiled file"
     },
-    // TODO: add separate options for gcc and g++
-    gppOptions: {
-      title: "gcc/g++ Options",
+    gccOptions: {
+      title: "gcc Options",
       type: "string",
       default: "",
-      description: "gcc/g++ command line options"
+      description: "gcc command line options"
+    },
+    gppOptions: {
+      title: "g++ Options",
+      type: "string",
+      default: "",
+      description: "g++ command line options"
     }
   }
 };
@@ -109,7 +115,7 @@ function getFilePath() {
     file;
 }
 
-function getArgs(files, output, extraArgs) {
+function getArgs(files, output, fileType, extraArgs) {
   // atom throws a SyntaxError if you use ES6's default parameters
   if (!extraArgs) {
     extraArgs = [];
@@ -121,7 +127,7 @@ function getArgs(files, output, extraArgs) {
     ...atom.
       config.
       // string of all user-defined options
-      get("gpp-compiler.gppOptions").
+      get(`gpp-compiler.g${fileType === "gcc" ? "cc" : "pp"}Options`).
       // turn that string into an array separated by spaces
       split(" ").
       // remove falsy elements
@@ -132,20 +138,24 @@ function getArgs(files, output, extraArgs) {
   ];
 }
 
-function compileFile(command, extraArgs, gdb) {
+function getTmp(base) {
+  return path.join(os.tmpdir(), base);
+}
+
+function compileFile(fileType, extraArgs, gdb) {
   const file = getFilePath();
 
   if (file) {
     const filePath = file.path;
     const info = path.parse(filePath);
 
-    compile(command, info, getArgs([
+    compile(getCommand(fileType), info, getArgs([
       filePath
-    ], info.name, extraArgs), gdb);
+    ], getTmp(info.name), fileType, extraArgs), gdb);
   } else {
     atom.
       notifications.
-      add("error", "<strong>Compiling error</strong>: File not found.<br/>Save before compiling.");
+      add("error", "<strong>File not found.</strong><br/>Save before compiling.");
   }
 }
 
@@ -167,9 +177,10 @@ function treeCompile(e) {
   }
 
   const info = path.parse(element.getAttribute("data-path"));
+  const fileType = getFileType(info.ext);
 
   // call compile, telling it to compile either C++ or C
-  compile(getCommand(getFileType(info.ext)), info, getArgs(files, info.name));
+  compile(getCommand(fileType), info, getArgs(files, getTmp(info.name), fileType));
 }
 
 // spawn gcc or g++ to compile files and optionally run the compiled files
@@ -229,7 +240,7 @@ function compile(command, info, args, gdb) {
           const terminal = atom.
             config.
             get("gpp-compiler.linuxTerminal");
-          const file = path.join(info.dir, info.name);
+          const file = getTmp(info.name);
 
           let command = null;
           let args = null;

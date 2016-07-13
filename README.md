@@ -2,9 +2,9 @@
 
 This Atom package allows you to compile and run C++ and C within the editor.
 
-To compile C++, press F5 or right click the file in tree view and click `Compile and Run C++`.
+To compile C or C++, press <kbd>F5</kbd> or right click the file in tree view and click `Compile and Run`.
 
-To compile C, press F6 or right click the file in tree view and click `Compile and Run C`.
+To compile C or C++ and attach the GNU Debugger, press <kbd>F6</kbd> or right click the file in tree view and click `Compile and Debug`.
 
 ## Dependencies
 
