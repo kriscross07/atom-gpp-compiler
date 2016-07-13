@@ -4,12 +4,20 @@
       {
         "label": "Compile and Run",
         "command": "gpp-compiler:compile"
+      },
+      {
+        "label": "Compile and Debug",
+        "command": "gpp-compiler:gdb"
       }
     ],
     ".tree-view .file": [
       {
         "label": "Compile and Run",
         "command": "gpp-compiler:tree-compile"
+      },
+      {
+        "label": "Compile and Debug",
+        "command": "gpp-compiler:tree-gdb"
       }
     ]
   }

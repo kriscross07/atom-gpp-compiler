@@ -16,15 +16,16 @@ module.exports = {
           compileFile(getFileType());
         },
         "gpp-compiler:gdb": () => {
-          compileFile(getFileType(), [
-            "-g"
-          ], true);
+          compileFile(getFileType(), true);
         }
       });
     atom.
       commands.
       add(".tree-view .file", {
-        "gpp-compiler:tree-compile": treeCompile
+        "gpp-compiler:tree-compile": treeCompile,
+        "gpp-compiler:tree-gdb": (e) => {
+          treeCompile(e, true);
+        }
       });
   },
   config: {
@@ -142,7 +143,7 @@ function getTmp(base) {
   return path.join(os.tmpdir(), base);
 }
 
-function compileFile(fileType, extraArgs, gdb) {
+function compileFile(fileType, gdb) {
   const file = getFilePath();
 
   if (file) {
@@ -151,7 +152,9 @@ function compileFile(fileType, extraArgs, gdb) {
 
     compile(getCommand(fileType), info, getArgs([
       filePath
-    ], getTmp(info.name), fileType, extraArgs), gdb);
+    ], getTmp(info.name), fileType, gdb ? [
+      "-g"
+    ] : null), gdb);
   } else {
     atom.
       notifications.
@@ -159,7 +162,7 @@ function compileFile(fileType, extraArgs, gdb) {
   }
 }
 
-function treeCompile(e) {
+function treeCompile(e, gdb) {
   // array of all selected tree view files
   const names = Array.from(document.querySelectorAll(".tree-view .file.selected > .name"));
   // array of files to compile
@@ -180,7 +183,9 @@ function treeCompile(e) {
   const fileType = getFileType(info.ext);
 
   // call compile, telling it to compile either C++ or C
-  compile(getCommand(fileType), info, getArgs(files, getTmp(info.name), fileType));
+  compile(getCommand(fileType), info, getArgs(files, getTmp(info.name), fileType, gdb ? [
+    "-g"
+  ] : null), gdb);
 }
 
 // spawn gcc or g++ to compile files and optionally run the compiled files
