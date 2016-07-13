@@ -41,12 +41,6 @@ module.exports = {
       default: true,
       description: "Run program after compiling is done"
     },
-    fileExtension: {
-      title: "File Extension",
-      type: "string",
-      default: "",
-      description: "Extension of compiled file"
-    },
     gccOptions: {
       title: "gcc Options",
       type: "string",
@@ -128,7 +122,7 @@ function getArgs(files, output, fileType, extraArgs) {
     ...atom.
       config.
       // string of all user-defined options
-      get(`gpp-compiler.g${fileType === "gcc" ? "cc" : "pp"}Options`).
+      get(`gpp-compiler.g${fileType === "C" ? "cc" : "pp"}Options`).
       // turn that string into an array separated by spaces
       split(" ").
       // remove falsy elements
@@ -198,11 +192,6 @@ function compile(command, info, args, gdb) {
   // if the user has an editor open, save it
   if (editor) {
     editor.save();
-  }
-
-  // set custom output file extension
-  if (atom.config.get("gpp-compiler.fileExtension")) {
-    info.name += `.${atom.config.get("gpp-compiler.fileExtension")}`;
   }
 
   // spawn gcc/g++ with the working directory of info.dir
@@ -321,7 +310,7 @@ function compile(command, info, args, gdb) {
         // them an alert telling them it was successful
         atom.
           notifications.
-          add("success", "Compiling successful");
+          add("success", "Compilation Successful");
       }
 
       // since the compilation was successful, remove `compiling_error.txt` if
