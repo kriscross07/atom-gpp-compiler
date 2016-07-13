@@ -75,5 +75,9 @@ rules:
   max-depth:
     - error
     - max: 10
-
-  react/no-danger: off
+  no-process-env: off
+  no-underscore-dangle: off
+  no-continue: off
+  max-params:
+    - error
+    - 5
