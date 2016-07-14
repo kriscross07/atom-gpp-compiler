@@ -23,7 +23,8 @@
     "kriscross07",
     "PoVa",
     "LinuxMercedes",
-    "farnabaz"
+    "farnabaz",
+    "sylxjtu"
   ],
   "scripts": {
     "test": "eslint index.js"
