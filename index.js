@@ -296,7 +296,8 @@ function compile(command, info, args, gdb) {
           // if the platform is Windows, run start (which is a shell builtin, so
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
-          child_process.exec(`start "${info.name}" cmd /C "${path.join(info.dir, info.name)} & echo. & pause"`);
+          const file = getTmp(info.name);
+          child_process.exec(`start "${info.name}" cmd /C "${file} & echo. & pause"`);
         } else if (process.platform === "darwin") {
           // if the platform is mac, spawn open, which does the same thing as
           // Windows' start, but is not a builtin, so we can child_process.spawn
