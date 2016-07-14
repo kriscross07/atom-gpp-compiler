@@ -303,7 +303,7 @@ function compile(command, info, args, gdb) {
           // Windows' start, but is not a builtin, so we can child_process.spawn
           // it
           child_process.spawn("open", [
-            info.name
+            getTmp(info.name)
           ], options);
         }
       } else {
