@@ -1,33 +1,14 @@
 /* global atom */
-
 "use strict";
 
 const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const CompositeDisposable = require("atom").CompositeDisposable;
 
 module.exports = {
-  activate() {
-    atom.
-      commands.
-      add("atom-text-editor", {
-        "gpp-compiler:compile": () => {
-          compileFile(getFileType());
-        },
-        "gpp-compiler:gdb": () => {
-          compileFile(getFileType(), true);
-        }
-      });
-    atom.
-      commands.
-      add(".tree-view .file", {
-        "gpp-compiler:tree-compile": treeCompile,
-        "gpp-compiler:tree-gdb": (e) => {
-          treeCompile(e, true);
-        }
-      });
-  },
+  subscriptions: null,
   config: {
     addCompilingErr: {
       title: "Add `compiling_error.txt`",
@@ -53,6 +34,31 @@ module.exports = {
       default: "",
       description: "g++ command line options"
     }
+  },
+  activate() {
+    this.subscriptions = new CompositeDisposable();
+
+    this.subscriptions.add(atom.
+      commands.
+      add("atom-text-editor", {
+        "gpp-compiler:compile": () => {
+          compileFile(getFileType());
+        },
+        "gpp-compiler:gdb": () => {
+          compileFile(getFileType(), true);
+        }
+      }));
+    this.subscriptions.add(atom.
+      commands.
+      add(".tree-view .file", {
+        "gpp-compiler:tree-compile": treeCompile,
+        "gpp-compiler:tree-gdb": (e) => {
+          treeCompile(e, true);
+        }
+      }));
+  },
+  deactivate() {
+    this.subscriptions.dispose();
   }
 };
 
@@ -236,19 +242,19 @@ function compile(command, info, args, gdb) {
             get("gpp-compiler.linuxTerminal");
           const file = getTmp(info.name);
 
-          let command = null;
+          let terminalCommand = null;
           let args = null;
 
           switch (terminal) {
             case "GNOME Terminal":
-              command = "gnome-terminal";
+              terminalCommand = "gnome-terminal";
               args = [
                 "--command"
               ];
 
               break;
             case "Konsole":
-              command = "konsole";
+              terminalCommand = "konsole";
               args = [
                 ...(gdb ? [] : [
                   "--hold"
@@ -258,7 +264,7 @@ function compile(command, info, args, gdb) {
 
               break;
             case "xfce4-terminal":
-              command = "xfce4-terminal";
+              terminalCommand = "xfce4-terminal";
               args = [
                 ...(gdb ? [] : [
                   "--hold"
@@ -268,14 +274,14 @@ function compile(command, info, args, gdb) {
 
               break;
             case "pantheon-terminal":
-              command = "pantheon-terminal";
+              terminalCommand = "pantheon-terminal";
               args = [
                 "-e"
               ];
 
               break;
             default:
-              command = "xterm";
+              terminalCommand = "xterm";
               args = [
                 ...(gdb ? [] : [
                   "-hold"
@@ -284,7 +290,7 @@ function compile(command, info, args, gdb) {
               ];
           }
 
-          child_process.spawn(command, [
+          child_process.spawn(terminalCommand, [
             ...args,
             // is there a better one-liner than this?
             ...(gdb ? [
@@ -297,6 +303,7 @@ function compile(command, info, args, gdb) {
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
           const file = getTmp(info.name);
+
           child_process.exec(`start "${info.name}" cmd /C "${file} & echo. & pause"`);
         } else if (process.platform === "darwin") {
           // if the platform is mac, spawn open, which does the same thing as

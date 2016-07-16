@@ -81,3 +81,4 @@ rules:
   max-params:
     - error
     - 5
+  no-undefined: off

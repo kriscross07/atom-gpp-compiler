@@ -2,7 +2,7 @@
   "name": "gpp-compiler",
   "main": "./index.js",
   "version": "3.0.1",
-  "description": "Compile and run C and C++ within Atom.",
+  "description": "Compile and run C and C++ within Atom",
   "keywords": [
     "compile",
     "c++",
@@ -28,5 +28,8 @@
   ],
   "scripts": {
     "test": "eslint index.js"
+  },
+  "devDependencies": {
+    "eslint": "3.0.1"
   }
 }
