@@ -46,6 +46,7 @@ You'll need to install [XCode](https://developer.apple.com/xcode/).
 git clone https://github.com/<your username>/atom-gpp-compiler.git
 cd atom-gpp-compiler
 rm -rf ~/.atom/packages/gpp-compiler
+npm install # this will install developer dependencies (eslint)
 apm link # this will create a symbolic link from this directory to ~/.atom/packages
 git checkout -b my-changes # this will create a new branch, change `my-changes` to something else
 # make your changes
