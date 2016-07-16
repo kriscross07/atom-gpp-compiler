@@ -304,7 +304,7 @@ function compile(command, info, args, gdb) {
           // cmd to run the program
           const file = getTmp(info.name);
 
-          child_process.exec(`start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} & echo. & pause"`);
+          child_process.exec(`start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`);
         } else if (process.platform === "darwin") {
           // if the platform is mac, spawn open, which does the same thing as
           // Windows' start, but is not a builtin, so we can child_process.spawn
