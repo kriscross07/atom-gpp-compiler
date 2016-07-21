@@ -190,6 +190,8 @@ function treeCompile(e, gdb) {
 
 // spawn gcc or g++ to compile files and optionally run the compiled files
 function compile(command, info, args, gdb) {
+  console.info(command, info, args, gdb);
+
   // store the current editor in the editor variable
   const editor = atom.
     workspace.
