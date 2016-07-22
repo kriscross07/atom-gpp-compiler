@@ -16,11 +16,11 @@ module.exports = {
       default: true,
       description: "Add a file named `compiling_error.txt` if compiling goes wrong"
     },
-    runAfterCompile: {
-      title: "Run After Compile",
+    debug: {
+      title: "Debug Mode",
       type: "boolean",
-      default: true,
-      description: "Run program after compiling is done"
+      default: false,
+      description: "Logs function calls in console."
     },
     gccOptions: {
       title: "gcc Options",
@@ -33,18 +33,29 @@ module.exports = {
       type: "string",
       default: "",
       description: "g++ command line options"
+    },
+    runAfterCompile: {
+      title: "Run After Compile",
+      type: "boolean",
+      default: true,
+      description: "Run program after compiling is done"
     }
   },
   activate() {
+    debug("activate()");
+    debug("platform", process.platform);
+
     this.subscriptions = new CompositeDisposable();
 
     this.subscriptions.add(atom.
       commands.
       add("atom-text-editor", {
         "gpp-compiler:compile": () => {
+          debug("gpp-compiler:compile");
           compileFile(getFileType());
         },
         "gpp-compiler:gdb": () => {
+          debug("gpp-compiler:gdb");
           compileFile(getFileType(), true);
         }
       }));
@@ -53,11 +64,13 @@ module.exports = {
       add(".tree-view .file", {
         "gpp-compiler:tree-compile": treeCompile,
         "gpp-compiler:tree-gdb": (e) => {
+          debug("gpp-compiler:tree-gdb");
           treeCompile(e, true);
         }
       }));
   },
   deactivate() {
+    debug("deactivate()");
     this.subscriptions.dispose();
   }
 };
@@ -81,7 +94,15 @@ if (process.platform === "linux") {
     };
 }
 
+function debug(...args) {
+  if (atom.config.get("gpp-compiler.debug")) {
+    console.info(...args);
+  }
+}
+
 function getFileType(ext) {
+  debug("getFileType()", ext);
+
   if (ext) {
     for (const grammar of atom.grammars.getGrammars()) {
       for (const fileType of grammar.fileTypes) {
@@ -100,6 +121,8 @@ function getFileType(ext) {
 }
 
 function getCommand(fileType) {
+  debug("getCommand()", fileType);
+
   switch (fileType) {
     case "C":
       return "gcc";
@@ -109,6 +132,8 @@ function getCommand(fileType) {
 }
 
 function getFilePath() {
+  debug("getFilePath()");
+
   return atom.
     workspace.
     getActiveTextEditor().
@@ -117,13 +142,15 @@ function getFilePath() {
 }
 
 function getArgs(files, output, fileType, extraArgs) {
+  debug("getArgs()", files, output, fileType, extraArgs);
+
   // atom throws a SyntaxError if you use ES6's default parameters
   if (!extraArgs) {
     extraArgs = [];
   }
 
   // array of arguments to pass to gcc or g++
-  return [
+  const args = [
     ...extraArgs,
     ...atom.
       config.
@@ -137,13 +164,21 @@ function getArgs(files, output, fileType, extraArgs) {
     "-o",
     output
   ];
+
+  debug("compiler args", args);
+
+  return args;
 }
 
 function getTmp(base) {
+  debug("getTmp()", base);
+
   return path.join(os.tmpdir(), base);
 }
 
 function compileFile(fileType, gdb) {
+  debug("compileFile()", fileType, gdb);
+
   const file = getFilePath();
 
   if (file) {
@@ -163,6 +198,8 @@ function compileFile(fileType, gdb) {
 }
 
 function treeCompile(e, gdb) {
+  debug("treeCompile()", gdb);
+
   // array of all selected tree view files
   const names = Array.from(document.querySelectorAll(".tree-view .file.selected > .name"));
   // array of files to compile
@@ -190,14 +227,19 @@ function treeCompile(e, gdb) {
 
 // spawn gcc or g++ to compile files and optionally run the compiled files
 function compile(command, info, args, gdb) {
-  // store the current editor in the editor variable
+  debug("compile()", command, info, args, gdb);
+  debug("config", atom.config.get("gpp-compiler"));
+
   const editor = atom.
     workspace.
     getActiveTextEditor();
 
-  // if the user has an editor open, save it
+  // if the user has a text editor open, save it
   if (editor) {
+    debug("saving...");
     editor.save();
+  } else {
+    debug("no editor");
   }
 
   // spawn gcc/g++ with the working directory of info.dir
@@ -212,9 +254,13 @@ function compile(command, info, args, gdb) {
     stderr.
     on("data", (data) => {
       stderr += data;
+
+      debug("stderr", data.toString());
     });
   // callback when the child's stdio streams close
   child.on("close", (code) => {
+    debug("exit code", code);
+
     // if the exit code is a non-zero status, alert the user stderr
     if (code) {
       atom.
@@ -290,6 +336,7 @@ function compile(command, info, args, gdb) {
               ];
           }
 
+          debug("command", terminalCommand, args, gdb, file, options);
           child_process.spawn(terminalCommand, [
             ...args,
             // is there a better one-liner than this?
@@ -303,8 +350,10 @@ function compile(command, info, args, gdb) {
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
           const file = getTmp(info.name);
+          const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
 
-          child_process.exec(`start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`, options);
+          debug("command", command);
+          child_process.exec(command, options);
         } else if (process.platform === "darwin") {
           // if the platform is mac, spawn open, which does the same thing as
           // Windows' start, but is not a builtin, so we can child_process.spawn
