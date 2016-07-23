@@ -5,6 +5,7 @@ const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+// const {CompositeDisposable} = require("atom");
 const CompositeDisposable = require("atom").CompositeDisposable;
 
 module.exports = {
@@ -152,6 +153,9 @@ function getArgs(files, output, fileType, extraArgs) {
   // array of arguments to pass to gcc or g++
   const args = [
     ...extraArgs,
+    ...files,
+    "-o",
+    output,
     ...atom.
       config.
       // string of all user-defined options
@@ -159,10 +163,7 @@ function getArgs(files, output, fileType, extraArgs) {
       // turn that string into an array separated by spaces
       split(" ").
       // remove falsy elements
-      filter(Boolean),
-    ...files,
-    "-o",
-    output
+      filter(Boolean)
   ];
 
   debug("compiler args", args);
