@@ -9,39 +9,6 @@ const os = require("os");
 const CompositeDisposable = require("atom").CompositeDisposable;
 
 module.exports = {
-  subscriptions: null,
-  config: {
-    addCompilingErr: {
-      title: "Add `compiling_error.txt`",
-      type: "boolean",
-      default: true,
-      description: "Add a file named `compiling_error.txt` if compiling goes wrong"
-    },
-    debug: {
-      title: "Debug Mode",
-      type: "boolean",
-      default: false,
-      description: "Logs function calls in console."
-    },
-    gccOptions: {
-      title: "gcc Options",
-      type: "string",
-      default: "",
-      description: "gcc command line options"
-    },
-    gppOptions: {
-      title: "g++ Options",
-      type: "string",
-      default: "",
-      description: "g++ command line options"
-    },
-    runAfterCompile: {
-      title: "Run After Compile",
-      type: "boolean",
-      default: true,
-      description: "Run program after compiling is done"
-    }
-  },
   activate() {
     debug("activate()");
     debug("platform", process.platform);
@@ -70,10 +37,43 @@ module.exports = {
         }
       }));
   },
+  config: {
+    addCompilingErr: {
+      default: true,
+      description: "Add a file named `compiling_error.txt` if compiling goes wrong",
+      title: "Add `compiling_error.txt`",
+      type: "boolean"
+    },
+    debug: {
+      default: false,
+      description: "Logs function calls in console.",
+      title: "Debug Mode",
+      type: "boolean"
+    },
+    gccOptions: {
+      default: "",
+      description: "gcc command line options",
+      title: "gcc Options",
+      type: "string"
+    },
+    gppOptions: {
+      default: "",
+      description: "g++ command line options",
+      title: "g++ Options",
+      type: "string"
+    },
+    runAfterCompile: {
+      default: true,
+      description: "Run program after compiling is done",
+      title: "Run After Compile",
+      type: "boolean"
+    }
+  },
   deactivate() {
     debug("deactivate()");
     this.subscriptions.dispose();
-  }
+  },
+  subscriptions: null
 };
 
 // if the user is running linux, add the option to change default terminal
@@ -82,8 +82,6 @@ if (process.platform === "linux") {
     exports.
     config.
     linuxTerminal = {
-      title: "Linux terminal",
-      type: "string",
       default: "XTerm",
       enum: [
         "XTerm",
@@ -91,7 +89,9 @@ if (process.platform === "linux") {
         "Konsole",
         "xfce4-terminal",
         "pantheon-terminal"
-      ]
+      ],
+      title: "Linux terminal",
+      type: "string"
     };
 }
 

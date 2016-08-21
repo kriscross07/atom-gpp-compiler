@@ -4,7 +4,6 @@ parserOptions:
   ecmaVersion: 6
   ecmaFeatures:
     globalReturn: true
-    jsx: true
 env:
   browser: true
   node: true
@@ -82,3 +81,12 @@ rules:
     - error
     - 5
   no-undefined: off
+  no-negated-condition: off
+  callback-return: off
+  no-catch-shadow: off
+  no-process-exit: off
+  operator-linebreak:
+    - error
+    - "after"
+  multiline-ternary: off
+  wrap-regex: off
