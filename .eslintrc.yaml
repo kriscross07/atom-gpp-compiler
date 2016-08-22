@@ -87,6 +87,10 @@ rules:
   no-process-exit: off
   operator-linebreak:
     - error
-    - "after"
-  multiline-ternary: off
+    - after
   wrap-regex: off
+  wrap-iife:
+    - error
+    - inside
+  multiline-ternary: off
+  sort-keys: off
