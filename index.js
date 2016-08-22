@@ -67,6 +67,12 @@ module.exports = {
       description: "Run program after compiling is done",
       title: "Run After Compile",
       type: "boolean"
+    },
+    showWarnings: {
+      default: true,
+      description: "Show compile warnings.",
+      title: "Show Warnings",
+      type: "boolean"
     }
   },
   deactivate() {
@@ -273,7 +279,7 @@ function compile(command, info, args, gdb) {
       }
     } else {
       // compilation was successful, but there still may be warnings
-      if (stderr) {
+      if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
         atom.notifications.addWarning(stderr.replace(/\n/g, "<br/><br/>"));
       }
 
