@@ -280,7 +280,7 @@ function compile(command, info, args, gdb) {
     } else {
       // compilation was successful, but there still may be warnings
       if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
-        atom.notifications.addWarning(stderr.replace(/\n/g, "<br/><br/>"));
+        atom.notifications.addWarning(stderr.replace(/\n/g, "<br/>"));
       }
 
       // if the user wants the program to run after compilation, run it in their
