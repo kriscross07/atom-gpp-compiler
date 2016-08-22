@@ -1,5 +1,31 @@
-## 2.3.2
+## 3.0.5
+* Show warning messages.
+* Added option to change compilers.
+
+## 3.0.4
+* Adds a debug mode.
+
+## 3.0.3
+* Spawns compiled binary in the source directory.
+
+## 3.0.2
+* Uses CompositeDisposables.
+* Added support for gdb on Windows.
+
+## 3.0.1
+* Fixed spawning compiled binary in Windows and Mac.
+
+## 3.0.0
+* Added support for the GNU Debugger.
+* Compiled to a temporary file, rather than a binary in the current directory.
+* Added `Compile and Debug` menu options.
+* Removed compiled file extension option.
+
+## 2.3.3
 * Added support for pantheon-terminal on Linux.
+
+## 2.3.2
+* Fixed arguments to `start` on Windows.
 
 ## 2.3.1
 * Fixed bug where compiled program wouldn't run on Windows.
