@@ -194,7 +194,7 @@ function compileFile(fileType, gdb) {
   } else {
     atom.
       notifications.
-      add("error", "<strong>File not found.</strong><br/>Save before compiling.");
+      addError("<strong>File not found.</strong><br/>Save before compiling.");
   }
 }
 
@@ -266,7 +266,7 @@ function compile(command, info, args, gdb) {
     if (code) {
       atom.
         notifications.
-        add("error", stderr.replace(/\n/, ""));
+        addError(stderr.replace(/\n/, ""));
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
         fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
@@ -373,7 +373,7 @@ function compile(command, info, args, gdb) {
         // them an alert telling them it was successful
         atom.
           notifications.
-          add("success", "Compilation Successful");
+          addSuccess("Compilation Successful");
       }
 
       // since the compilation was successful, remove `compiling_error.txt` if
