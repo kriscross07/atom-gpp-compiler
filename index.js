@@ -266,7 +266,7 @@ function compile(command, info, args, gdb) {
     if (code) {
       atom.
         notifications.
-        addError(stderr.replace(/\n/, ""));
+        addError(stderr.replace(/\n/g, "<br/>"));
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
         fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
