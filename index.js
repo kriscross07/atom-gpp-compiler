@@ -50,16 +50,16 @@ module.exports = {
       title: "Debug Mode",
       type: "boolean"
     },
-    gccOptions: {
+    cCompilerOptions: {
       default: "",
-      description: "gcc command line options",
-      title: "gcc Options",
+      description: "C compiler command line options",
+      title: "C Compiler Options",
       type: "string"
     },
-    gppOptions: {
+    cppCompilerOptions: {
       default: "",
-      description: "g++ command line options",
-      title: "g++ Options",
+      description: "C++ compiler command line options",
+      title: "C++ Compiler Options",
       type: "string"
     },
     runAfterCompile: {
@@ -73,6 +73,16 @@ module.exports = {
       description: "Show compile warnings.",
       title: "Show Warnings",
       type: "boolean"
+    },
+    cCompiler: {
+      default: "gcc",
+      title: "C Compiler",
+      type: "string"
+    },
+    cppCompiler: {
+      default: "g++",
+      title: "C++ Compiler",
+      type: "string"
     }
   },
   deactivate() {
@@ -132,9 +142,9 @@ function getCommand(fileType) {
 
   switch (fileType) {
     case "C":
-      return "gcc";
+      return atom.config.get("gpp-compiler.cCompiler");
     case "C++":
-      return "g++";
+      return atom.config.get("gpp-compiler.cppCompiler");
   }
 }
 
@@ -156,7 +166,7 @@ function getArgs(files, output, fileType, extraArgs) {
     extraArgs = [];
   }
 
-  // array of arguments to pass to gcc or g++
+  // array of arguments to pass to the compiler
   const args = [
     ...extraArgs,
     ...files,
@@ -165,7 +175,7 @@ function getArgs(files, output, fileType, extraArgs) {
     ...atom.
       config.
       // string of all user-defined options
-      get(`gpp-compiler.g${fileType === "C" ? "cc" : "pp"}Options`).
+      get(`gpp-compiler.c${fileType === "C++" ? "pp" : ""}CompilerOptions`).
       // turn that string into an array separated by spaces
       split(" ").
       // remove falsy elements
@@ -232,7 +242,7 @@ function treeCompile(e, gdb) {
   ] : null), gdb);
 }
 
-// spawn gcc or g++ to compile files and optionally run the compiled files
+// spawn the compiler to compile files and optionally run the compiled files
 function compile(command, info, args, gdb) {
   debug("compile()", command, info, args, gdb);
   debug("config", atom.config.get("gpp-compiler"));
@@ -249,7 +259,7 @@ function compile(command, info, args, gdb) {
     debug("no editor");
   }
 
-  // spawn gcc/g++ with the working directory of info.dir
+  // spawn the compiler with the working directory of info.dir
   const child = child_process.spawn(command, args, {
     cwd: info.dir
   });
