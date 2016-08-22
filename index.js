@@ -272,6 +272,11 @@ function compile(command, info, args, gdb) {
         fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
       }
     } else {
+      // compilation was successful, but there still may be warnings
+      if (stderr) {
+        atom.notifications.addWarning(stderr.replace(/\n/g, "<br/><br/>"));
+      }
+
       // if the user wants the program to run after compilation, run it in their
       // favorite terminal
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
