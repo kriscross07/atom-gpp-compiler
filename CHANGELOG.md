@@ -1,3 +1,7 @@
+## 3.0.6
+* Added support for URxvt on Linux.
+* Added option to compile to temporary directory.
+
 ## 3.0.5
 * Show warning messages.
 * Added option to change compilers.
