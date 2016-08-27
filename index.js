@@ -104,7 +104,8 @@ if (process.platform === "linux") {
         "GNOME Terminal",
         "Konsole",
         "xfce4-terminal",
-        "pantheon-terminal"
+        "pantheon-terminal",
+        "URxvt"
       ],
       title: "Linux terminal",
       type: "string"
@@ -344,6 +345,16 @@ function compile(command, info, args, gdb) {
             case "pantheon-terminal":
               terminalCommand = "pantheon-terminal";
               args = [
+                "-e"
+              ];
+
+              break;
+            case "URxvt":
+              terminalCommand = "urxvt";
+              args = [
+                ...(gdb ? [] : [
+                  "-hold"
+                ]),
                 "-e"
               ];
 
