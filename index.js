@@ -83,6 +83,11 @@ module.exports = {
       default: "g++",
       title: "C++ Compiler",
       type: "string"
+    },
+    compileToTmpDirectory: {
+      default: true,
+      title: "Compile to Temporary Directory",
+      type: "boolean"
     }
   },
   deactivate() {
@@ -188,10 +193,14 @@ function getArgs(files, output, fileType, extraArgs) {
   return args;
 }
 
-function getTmp(base) {
-  debug("getTmp()", base);
+function getCompiledPath(dir, base) {
+  debug("getCompiledPath()", dir, base);
 
-  return path.join(os.tmpdir(), base);
+  if (atom.config.get("gpp-compiler.compileToTmpDirectory")) {
+    return path.join(os.tmpdir(), base);
+  } else {
+    return path.join(dir, base);
+  }
 }
 
 function compileFile(fileType, gdb) {
@@ -205,7 +214,7 @@ function compileFile(fileType, gdb) {
 
     compile(getCommand(fileType), info, getArgs([
       filePath
-    ], getTmp(info.name), fileType, gdb ? [
+    ], getCompiledPath(info.dir, info.name), fileType, gdb ? [
       "-g"
     ] : null), gdb);
   } else {
@@ -238,7 +247,7 @@ function treeCompile(e, gdb) {
   const fileType = getFileType(info.ext);
 
   // call compile, telling it to compile either C++ or C
-  compile(getCommand(fileType), info, getArgs(files, getTmp(info.name), fileType, gdb ? [
+  compile(getCommand(fileType), info, getArgs(files, getCompiledPath(info.dir, info.name), fileType, gdb ? [
     "-g"
   ] : null), gdb);
 }
@@ -309,7 +318,7 @@ function compile(command, info, args, gdb) {
           const terminal = atom.
             config.
             get("gpp-compiler.linuxTerminal");
-          const file = getTmp(info.name);
+          const file = getCompiledPath(info.dir, info.name);
 
           let terminalCommand = null;
           let args = null;
@@ -382,7 +391,7 @@ function compile(command, info, args, gdb) {
           // if the platform is Windows, run start (which is a shell builtin, so
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
-          const file = getTmp(info.name);
+          const file = getCompiledPath(info.dir, info.name);
           const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
 
           debug("command", command);
@@ -392,7 +401,7 @@ function compile(command, info, args, gdb) {
           // Windows' start, but is not a builtin, so we can child_process.spawn
           // it
           child_process.spawn("open", [
-            getTmp(info.name)
+            getCompiledPath(info.dir, info.name)
           ], options);
         }
       } else {
