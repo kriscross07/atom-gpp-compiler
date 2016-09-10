@@ -110,7 +110,8 @@ if (process.platform === "linux") {
         "Konsole",
         "xfce4-terminal",
         "pantheon-terminal",
-        "URxvt"
+        "URxvt",
+        "MATE Terminal"
       ],
       title: "Linux terminal",
       type: "string"
@@ -365,6 +366,13 @@ function compile(command, info, args, gdb) {
                   "-hold"
                 ]),
                 "-e"
+              ];
+
+              break;
+            case "MATE Terminal":
+              terminalCommand = "mate-terminal";
+              args = [
+                "--command"
               ];
 
               break;
