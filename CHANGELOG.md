@@ -1,3 +1,6 @@
+## 3.0.7
+* Added support for MATE Terminal.
+
 ## 3.0.6
 * Added support for URxvt on Linux.
 * Added option to compile to temporary directory.
