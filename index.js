@@ -328,7 +328,7 @@ function compile(command, info, args, gdb) {
             case "GNOME Terminal":
               terminalCommand = "gnome-terminal";
               args = [
-                "--command"
+                "-x"
               ];
 
               break;
@@ -372,7 +372,7 @@ function compile(command, info, args, gdb) {
             case "MATE Terminal":
               terminalCommand = "mate-terminal";
               args = [
-                "--command"
+                "-x"
               ];
 
               break;
