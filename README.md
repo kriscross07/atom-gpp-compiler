@@ -2,13 +2,14 @@
 
 This Atom package allows you to compile and run C++ and C within the editor.
 
-To compile C or C++, press <kbd>F5</kbd> or right click the file in tree view and click `Compile and Run`.
+To compile C, C++ or CUDA, press <kbd>F5</kbd> or right click the file in tree view and click `Compile and Run`.
 
-To compile C or C++ and attach the GNU Debugger, press <kbd>F6</kbd> or right click the file in tree view and click `Compile and Debug`.
+To compile C, C++ or CUDA and attach the GNU Debugger, press <kbd>F6</kbd> or right click the file in tree view and click `Compile and Debug`.
 
 ## Dependencies
 
 This package relies on a C / C++ compiler (gcc).
+For CUDA support is also needed the package [language-cuda](https://atom.io/packages/language-cuda) and to have CUDA from NVIDIA installed.
 
 ### Linux
 
@@ -36,6 +37,20 @@ You'll need to install [MinGW](http://www.mingw.org/) and [add it to your PATH](
 ### Mac
 
 You'll need to install [XCode](https://developer.apple.com/xcode/).
+
+### CUDA support
+  
+#### CUDA on Windows
+NVIDIA instructions [here](http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html)
+
+#### CUDA on Linux
+NVIDIA instructions [here](http://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html)
+
+#### CUDA on Mac
+NVIDIA instructions [here](http://docs.nvidia.com/cuda/cuda-installation-guide-mac-os-x/index.html)
+  
+  
+
 
 ## Contributing
 
