@@ -62,6 +62,12 @@ module.exports = {
       title: "C++ Compiler Options",
       type: "string"
     },
+    nvccCompilerOptions: {
+      default: "",
+      description: "CUDA compiler command line options",
+      title: "CUDA Compiler Options",
+      type: "string"
+    },
     runAfterCompile: {
       default: true,
       description: "Run program after compiling is done",
@@ -82,6 +88,11 @@ module.exports = {
     cppCompiler: {
       default: "g++",
       title: "C++ Compiler",
+      type: "string"
+    },
+    nvccCompiler: {
+      default: "nvcc",
+      title: "CUDA Compiler",
       type: "string"
     },
     compileToTmpDirectory: {
@@ -152,6 +163,8 @@ function getCommand(fileType) {
       return atom.config.get("gpp-compiler.cCompiler");
     case "C++":
       return atom.config.get("gpp-compiler.cppCompiler");
+    case "CUDA":
+      return atom.config.get("gpp-compiler.nvccCompiler");
   }
 }
 
@@ -182,7 +195,7 @@ function getArgs(files, output, fileType, extraArgs) {
     ...atom.
       config.
       // string of all user-defined options
-      get(`gpp-compiler.c${fileType === "C++" ? "pp" : ""}CompilerOptions`).
+      get(`gpp-compiler.${fileType === "CUDA" ? "nv" : ""}c${fileType === "C++" ? "pp" : ""}${fileType === "CUDA" ? "c" : ""}CompilerOptions`).
       // turn that string into an array separated by spaces
       split(" ").
       // remove falsy elements
