@@ -111,7 +111,8 @@ if (process.platform === "linux") {
         "xfce4-terminal",
         "pantheon-terminal",
         "URxvt",
-        "MATE Terminal"
+        "MATE Terminal",
+        "Terminator"
       ],
       title: "Linux terminal",
       type: "string"
@@ -375,6 +376,14 @@ function compile(command, info, args, gdb) {
                 "--command"
               ];
 
+              break;
+            case "Terminator":
+              terminalCommand = "terminator";
+              args = [
+                "--command"
+              ];
+              // Required change in terminator settings
+              // Preferences => Profiles => Command => When command exits: Hold Terminal Open
               break;
             default:
               terminalCommand = "xterm";
