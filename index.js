@@ -382,8 +382,8 @@ function compile(command, info, args, gdb) {
               args = [
                 "--command"
               ];
-              //Required change in terminator settings
-              //Preferences => Profiles => Command => When command exits: Hold Terminal Open
+              // Required change in terminator settings
+              // Preferences => Profiles => Command => When command exits: Hold Terminal Open
               break;
             default:
               terminalCommand = "xterm";
