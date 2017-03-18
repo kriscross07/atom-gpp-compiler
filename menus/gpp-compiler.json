@@ -8,6 +8,10 @@
       {
         "label": "Compile and Debug",
         "command": "gpp-compiler:gdb"
+      },
+      {
+        "label": "Run last compile",
+        "command": "gpp-compiler:run"
       }
     ],
     ".tree-view .file": [

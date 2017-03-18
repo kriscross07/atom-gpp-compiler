@@ -25,6 +25,10 @@ module.exports = {
         "gpp-compiler:gdb": () => {
           debug("gpp-compiler:gdb");
           compileFile(getFileType(), true);
+        },
+        "gpp-compiler:run": () => {
+          debug("gpp-compiler:run");
+          runFile(getFileType());
         }
       }));
     this.subscriptions.add(atom.
@@ -207,6 +211,13 @@ function getCompiledPath(dir, base) {
 function compileFile(fileType, gdb) {
   debug("compileFile()", fileType, gdb);
 
+  if (fileType!="C"&&fileType!="C++") {
+    atom.
+      notifications.
+      addError("<strong>File not support.</strong><br/>Use only C,C++ file.");
+    return;
+  }
+
   const file = getFilePath();
 
   if (file) {
@@ -251,6 +262,23 @@ function treeCompile(e, gdb) {
   compile(getCommand(fileType), info, getArgs(files, getCompiledPath(info.dir, info.name), fileType, gdb ? [
     "-g"
   ] : null), gdb);
+}
+
+function runFile(fileType) {
+  debug("runFile()", fileType);
+
+  const file = getFilePath();
+
+  if (file) {
+    const filePath = file.path;
+    const info = path.parse(filePath);
+
+    runExec(info);
+  } else {
+    atom.
+      notifications.
+      addError("<strong>File not found.</strong><br/>Save before compiling.");
+  }
 }
 
 // spawn the compiler to compile files and optionally run the compiled files
@@ -307,111 +335,7 @@ function compile(command, info, args, gdb) {
       // if the user wants the program to run after compilation, run it in their
       // favorite terminal
       if (atom.config.get("gpp-compiler.runAfterCompile")) {
-        // options to tell child_process.spawn() to run in the directory of the
-        // program
-        const options = {
-          cwd: info.dir
-        };
-
-        if (process.platform === "linux") {
-          // if the platform is linux, spawn the program in the user set
-          // terminal
-          const terminal = atom.
-            config.
-            get("gpp-compiler.linuxTerminal");
-          const file = getCompiledPath(info.dir, info.name);
-
-          let terminalCommand = null;
-          let args = null;
-
-          switch (terminal) {
-            case "GNOME Terminal":
-              terminalCommand = "gnome-terminal";
-              args = [
-                "--command"
-              ];
-
-              break;
-            case "Konsole":
-              terminalCommand = "konsole";
-              args = [
-                ...(gdb ? [] : [
-                  "--hold"
-                ]),
-                "-e"
-              ];
-
-              break;
-            case "xfce4-terminal":
-              terminalCommand = "xfce4-terminal";
-              args = [
-                ...(gdb ? [] : [
-                  "--hold"
-                ]),
-                "--command"
-              ];
-
-              break;
-            case "pantheon-terminal":
-              terminalCommand = "pantheon-terminal";
-              args = [
-                "-e"
-              ];
-
-              break;
-            case "URxvt":
-              terminalCommand = "urxvt";
-              args = [
-                ...(gdb ? [] : [
-                  "-hold"
-                ]),
-                "-e"
-              ];
-
-              break;
-            case "MATE Terminal":
-              terminalCommand = "mate-terminal";
-              args = [
-                "--command"
-              ];
-
-              break;
-            default:
-              terminalCommand = "xterm";
-              args = [
-                ...(gdb ? [] : [
-                  "-hold"
-                ]),
-                "-e"
-              ];
-          }
-
-          debug("command", terminalCommand, args, gdb, file, options);
-          child_process.spawn(terminalCommand, [
-            ...args,
-            // is there a better one-liner than this?
-            ...(gdb ? [
-              "gdb"
-            ] : []),
-            file
-          ], options);
-        } else if (process.platform === "win32") {
-          // if the platform is Windows, run start (which is a shell builtin, so
-          // we can't use child_process.spawn), which spawns a new instance of
-          // cmd to run the program
-          const file = getCompiledPath(info.dir, info.name);
-          const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
-
-          debug("command", command);
-          child_process.exec(command, options);
-        } else if (process.platform === "darwin") {
-          // if the platform is mac, spawn open, which does the same thing as
-          // Windows' start, but is not a builtin, so we can child_process.spawn
-          // it
-          child_process.spawn("open", [
-            getCompiledPath(info.dir, info.name)
-          ], options);
-        }
+        runExec(info, gdb);
       } else {
         // if the user doesn't want the program to run after compilation, give
         // them an alert telling them it was successful
@@ -429,4 +353,112 @@ function compile(command, info, args, gdb) {
       });
     }
   });
+}
+
+function runExec(info, gdb){
+  // options to tell child_process.spawn() to run in the directory of the
+  // program
+  const options = {
+    cwd: info.dir
+  };
+
+  if (process.platform === "linux") {
+    // if the platform is linux, spawn the program in the user set
+    // terminal
+    const terminal = atom.
+      config.
+      get("gpp-compiler.linuxTerminal");
+    const file = getCompiledPath(info.dir, info.name);
+
+    let terminalCommand = null;
+    let args = null;
+
+    switch (terminal) {
+      case "GNOME Terminal":
+        terminalCommand = "gnome-terminal";
+        args = [
+          "--command"
+        ];
+
+        break;
+      case "Konsole":
+        terminalCommand = "konsole";
+        args = [
+          ...(gdb ? [] : [
+            "--hold"
+          ]),
+          "-e"
+        ];
+
+        break;
+      case "xfce4-terminal":
+        terminalCommand = "xfce4-terminal";
+        args = [
+          ...(gdb ? [] : [
+            "--hold"
+          ]),
+          "--command"
+        ];
+
+        break;
+      case "pantheon-terminal":
+        terminalCommand = "pantheon-terminal";
+        args = [
+          "-e"
+        ];
+
+        break;
+      case "URxvt":
+        terminalCommand = "urxvt";
+        args = [
+          ...(gdb ? [] : [
+            "-hold"
+          ]),
+          "-e"
+        ];
+
+        break;
+      case "MATE Terminal":
+        terminalCommand = "mate-terminal";
+        args = [
+          "--command"
+        ];
+
+        break;
+      default:
+        terminalCommand = "xterm";
+        args = [
+          ...(gdb ? [] : [
+            "-hold"
+          ]),
+          "-e"
+        ];
+    }
+
+    debug("command", terminalCommand, args, gdb, file, options);
+    child_process.spawn(terminalCommand, [
+      ...args,
+      // is there a better one-liner than this?
+      ...(gdb ? [
+        "gdb"
+      ] : []),
+      file
+    ], options);
+  } else if (process.platform === "win32") {
+    // if the platform is Windows, run start (which is a shell builtin, so
+    // we can't use child_process.spawn), which spawns a new instance of
+    // cmd to run the program
+    const file = getCompiledPath(info.dir, info.name);
+    const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
+
+    debug("command", command);
+    child_process.exec(command, options);
+  } else if (process.platform === "darwin") {
+    // if the platform is mac, spawn open, which does the same thing as
+    // Windows' start, but is not a builtin, so we can child_process.spawn
+    // it
+    child_process.spawn("open", [
+      getCompiledPath(info.dir, info.name)
+    ], options);
+  }
 }
