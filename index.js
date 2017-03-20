@@ -200,7 +200,13 @@ function getCompiledPath(dir, base) {
   if (atom.config.get("gpp-compiler.compileToTmpDirectory")) {
     return path.join(os.tmpdir(), base);
   } else {
-    return path.join(dir, base);
+    const flag = atom.config.get("gpp-compiler.cppCompiler");
+    if (flag == "clang" || flag == "clang++") {
+      return path.join(dir,(base + ".exe"));
+    }
+    else {
+      return path.join(dir, base);
+    }
   }
 }
 
