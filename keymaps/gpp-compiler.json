@@ -1,6 +1,13 @@
 {
   "atom-text-editor": {
     "f5": "gpp-compiler:compile",
-    "f6": "gpp-compiler:gdb"
-  }
+    "f6": "gpp-compiler:gdb",
+    "f10": "gpp-compiler:run",
+    "ctrl-right": "gpp-compiler:goToNextErr",
+    "ctrl-left": "gpp-compiler:goToNextErr"
+    },
+   ".editor": {
+       "ctrl-right": "gpp-compiler:goToNextErr",
+       "ctrl-left": "gpp-compiler:goToNextErr"
+   }
 }

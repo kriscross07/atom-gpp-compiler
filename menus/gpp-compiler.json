@@ -8,7 +8,19 @@
       {
         "label": "Compile and Debug",
         "command": "gpp-compiler:gdb"
-      }
+    },
+    {
+      "label": "Run",
+      "command": "gpp-compiler:run"
+    },
+    {
+      "label": "Go to next error",
+      "command": "gpp-compiler:goToNextErr"
+    },
+    {
+      "label": "Go to previous error",
+      "command": "gpp-compiler:goToPrevErr"
+    }
     ],
     ".tree-view .file": [
       {
@@ -18,6 +30,10 @@
       {
         "label": "Compile and Debug",
         "command": "gpp-compiler:tree-gdb"
+      },
+      {
+        "label": "Run",
+        "command": "gpp-compiler:run"
       }
     ]
   }
