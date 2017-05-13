@@ -398,112 +398,56 @@ function run(command, info, args, gdb){
   }
 }
 
+var errs = [];
+
 function goToNextErr(){
-    const file = getFilePath();
+    curErr++;
 
-    if (!file) return;
-
-    const filePath = file.path;
-	const info = path.parse(filePath);
-
-    let stderr = "";
-
-    fs.readFile(path.join(info.dir, "compiling_error.txt"), function read(err, data) {
-        if (err) {
-            return;
+    for(var i = 0; i < errs.length; curErr++, i++){
+        if(curErr >= errs.length) curErr = 0;
+        if(parseErr()){
+          break;
         }
-        stderr += data;
-
-        if(stderr === undefined) return;
-
-        var errs = stderr.split('\n');
-
-        curErr++;
-
-        for(var i = 0; i < errs.length; curErr++, i++){
-            if(curErr >= errs.length) curErr = 0;
-            var res = errs[curErr].split(':');
-            if(res === null){
-                continue;
-            }
-            if(res.length < 4){
-                continue;
-            }
-            if(isNaN(res[2]) || isNaN(res[3])){
-                continue;
-            }
-
-            const currenfile = getFilePath();
-
-            if(res[0]+':'+res[1] !== getFilePath(info.dir, info.name).path){
-                continue;
-            }
-
-            var row = Number(res[2]) - 1;
-            var column = Number(res[3]) - 1;
-            const position = new Point(row, column);
-
-            const editor = atom.workspace.getActivePaneItem();
-            editor.setCursorBufferPosition(position);
-
-            break;
-        }
-    });
+    }
 }
 
 function goToPrevErr(){
-    const file = getFilePath();
+    curErr--;
 
-    if (!file) return;
+    for(var i = 0; i < errs.length; curErr--, i++){
+        if(curErr < 0) curErr = errs.length - 1;
 
-    const filePath = file.path;
-	const info = path.parse(filePath);
-
-    let stderr = "";
-
-    fs.readFile(path.join(info.dir, "compiling_error.txt"), function read(err, data) {
-        if (err) {
-            Atom.notifications.addError(err);
-            return;
+        if(parseErr()){
+          break;
         }
-        stderr += data;
+    }
+}
 
-        if(stderr === undefined) return;
+function parseErr(){
+    var res = errs[curErr].split(':');
 
-        var errs = stderr.split('\n');
+    var path = "";
+    var i = 0;
 
-        curErr--;
+    while(i < res.length && isNaN(res[i])){
+        if(i > 0) path+=":";
+        path+=res[i];
+        i++;
+    }
+    if(i >= res.length-1){
+        return 0;
+    }
+    if(isNaN(res[i+1])){
+        return 0;
+    }
+    var row = Number(res[i]) - 1;
+    var column = Number(res[i+1]) - 1;
+    const position = new Point(row, column);
 
-        for(var i = 0; i < errs.length; curErr--, i++){
-            if(curErr < 0) curErr = errs.length - 1;
+    const editor = atom.workspace.getActivePaneItem();
+    editor.setCursorBufferPosition(position);
 
-            var res = errs[curErr].split(':');
-            if(res === null){
-                continue;
-            }
-            if(res.length < 4){
-                continue;
-            }
-            if(isNaN(res[2]) || isNaN(res[3])){
-                continue;
-            }
-
-            const currenfile = getFilePath();
-
-            if(res[0]+':'+res[1] !== getFilePath(info.dir, info.name).path){
-                continue;
-            }
-
-            var row = Number(res[2]) - 1;
-            var column = Number(res[3]) - 1;
-            const position = new Point(row, column);
-
-            const editor = atom.workspace.getActivePaneItem();
-            editor.setCursorBufferPosition(position);
-
-            break;
-        }
-    });
+    return 1;
 }
 
 function compile(command, info, args, gdb) {
@@ -540,7 +484,7 @@ function compile(command, info, args, gdb) {
   // callback when the child's stdio streams close
   child.on("close", (code) => {
 	debug("exit code", code);
-
+    errs = stderr.split('\n');
 	// if the exit code is a non-zero status, alert the user stderr
 	if (code) {
       atom.notifications.addError(stderr.replace(/\n/g, "<br/>"));
