@@ -405,12 +405,26 @@ function compile(command, info, args, gdb) {
           debug("command", command);
           child_process.exec(command, options);
         } else if (process.platform === "darwin") {
-          // if the platform is mac, spawn open, which does the same thing as
-          // Windows' start, but is not a builtin, so we can child_process.spawn
-          // it
-          child_process.spawn("open", [
-            getCompiledPath(info.dir, info.name)
-          ], options);
+          if (!gdb) {
+            // if the platform is mac, spawn open, which does the same thing as
+            // Windows' start, but is not a builtin, so we can child_process.spawn
+            // it
+            child_process.spawn("open", [
+              getCompiledPath(info.dir, info.name)
+            ], options);
+          } else {
+            // unfortunately open cannot call non-apps like gdb with arguments
+            // so we have to create a "runner" script that calls gdb,
+            // then open that script with Terminal
+            // note: working dir for gdb is set NOT by the options in the
+            // child_process.spawn call, (which should not affect anything)
+            // but by the explicit cd in the runner script
+            const temp_runner_path = `${path.join(os.tmpdir(), info.name)}_runner.sh`;
+
+            fs.writeFile(temp_runner_path, `cd ${info.dir} ; gdb ${getCompiledPath(info.dir, info.name)}`);
+            child_process.exec(`chmod +x ${temp_runner_path}`, options);
+            child_process.spawn("open", ["-a", "Terminal.app", temp_runner_path], options);
+          }
         }
       } else {
         // if the user doesn't want the program to run after compilation, give
