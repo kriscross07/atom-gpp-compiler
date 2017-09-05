@@ -88,6 +88,11 @@ module.exports = {
       default: true,
       title: "Compile to Temporary Directory",
       type: "boolean"
+    },
+    autoCloseNotifications: {
+      default: false,
+      title: "Automatically close notifications",
+      type: "boolean"
     }
   },
   deactivate() {
@@ -221,7 +226,10 @@ function compileFile(fileType, gdb) {
   } else {
     atom.
       notifications.
-      addError("<strong>File not found.</strong><br/>Save before compiling.");
+      addError(
+        "<strong>File not found.</strong><br/>Save before compiling.",
+        {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+      );
   }
 }
 
@@ -293,7 +301,10 @@ function compile(command, info, args, gdb) {
     if (code) {
       atom.
         notifications.
-        addError(stderr.replace(/\n/g, "<br/>"));
+        addError(
+          stderr.replace(/\n/g, "<br/>"),
+          {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+        );
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
         fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
@@ -301,7 +312,10 @@ function compile(command, info, args, gdb) {
     } else {
       // compilation was successful, but there still may be warnings
       if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
-        atom.notifications.addWarning(stderr.replace(/\n/g, "<br/>"));
+        atom.notifications.addWarning(
+          stderr.replace(/\n/g, "<br/>"),
+          {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+        );
       }
 
       // if the user wants the program to run after compilation, run it in their
