@@ -228,7 +228,7 @@ function compileFile(fileType, gdb) {
       notifications.
       addError(
         "<strong>File not found.</strong><br/>Save before compiling.",
-        {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+        {dismissable: !atom.config.get("gpp-compiler.autoCloseNotifications")}
       );
   }
 }
@@ -303,7 +303,7 @@ function compile(command, info, args, gdb) {
         notifications.
         addError(
           stderr.replace(/\n/g, "<br/>"),
-          {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+          {dismissable: !atom.config.get("gpp-compiler.autoCloseNotifications")}
         );
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
@@ -314,7 +314,7 @@ function compile(command, info, args, gdb) {
       if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
         atom.notifications.addWarning(
           stderr.replace(/\n/g, "<br/>"),
-          {dismissable: atom.config.get("gpp-compiler.autoCloseNotifications")}
+          {dismissable: !atom.config.get("gpp-compiler.autoCloseNotifications")}
         );
       }
 
