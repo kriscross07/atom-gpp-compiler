@@ -111,7 +111,8 @@ if (process.platform === "linux") {
         "xfce4-terminal",
         "pantheon-terminal",
         "URxvt",
-        "MATE Terminal"
+        "MATE Terminal",
+        "termite"
       ],
       title: "Linux terminal",
       type: "string"
@@ -325,6 +326,16 @@ function compile(command, info, args, gdb) {
           let args = null;
 
           switch (terminal) {
+            case "termite":
+              terminalCommand = "termite";
+              args = [
+                ...(gdb ? [] : [
+                  "--hold"
+                ]),
+                "-e"
+              ];
+
+              break;
             case "GNOME Terminal":
               terminalCommand = "gnome-terminal";
               args = [
