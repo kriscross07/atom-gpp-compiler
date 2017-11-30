@@ -111,7 +111,8 @@ if (process.platform === "linux") {
         "xfce4-terminal",
         "pantheon-terminal",
         "URxvt",
-        "MATE Terminal"
+        "MATE Terminal",
+        "Deepin Terminal"
       ],
       title: "Linux terminal",
       type: "string"
@@ -373,6 +374,13 @@ function compile(command, info, args, gdb) {
               terminalCommand = "mate-terminal";
               args = [
                 "--command"
+              ];
+
+              break;
+            case "Deepin Terminal":
+              terminalCommand = "deepin-terminal";
+              args = [
+                "-e"
               ];
 
               break;
