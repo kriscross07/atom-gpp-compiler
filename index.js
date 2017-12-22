@@ -15,27 +15,29 @@ module.exports = {
 
     this.subscriptions = new CompositeDisposable();
 
-    this.subscriptions.add(atom.
-      commands.
-      add("atom-text-editor", {
-        "gpp-compiler:compile": () => {
-          debug("gpp-compiler:compile");
-          compileFile(getFileType());
-        },
-        "gpp-compiler:gdb": () => {
-          debug("gpp-compiler:gdb");
-          compileFile(getFileType(), true);
+    this.subscriptions.add(atom.commands.add("atom-text-editor", {
+      "gpp-compiler:compile": () => {
+        debug("gpp-compiler:compile");
+        compileFile(getFileType());
+      },
+      "gpp-compiler:gdb": () => {
+        debug("gpp-compiler:gdb");
+        compileFile(getFileType(), true);
+      },
+      "gpp-compiler:compilerOptions": () => {
+        debug("gpp-compiler:compilerOptions");
+        if (!checkIfExtraArgsInputExists(true)) {
+          openExtraArgsInput();
         }
-      }));
-    this.subscriptions.add(atom.
-      commands.
-      add(".tree-view .file", {
-        "gpp-compiler:tree-compile": treeCompile,
-        "gpp-compiler:tree-gdb": (e) => {
-          debug("gpp-compiler:tree-gdb");
-          treeCompile(e, true);
-        }
-      }));
+      }
+    }));
+    this.subscriptions.add(atom.commands.add(".tree-view .file", {
+      "gpp-compiler:tree-compile": treeCompile,
+      "gpp-compiler:tree-gdb": (e) => {
+        debug("gpp-compiler:tree-gdb");
+        treeCompile(e, true);
+      }
+    }));
   },
   config: {
     addCompilingErr: {
@@ -100,22 +102,22 @@ module.exports = {
 // if the user is running linux, add the option to change default terminal
 if (process.platform === "linux") {
   module.
-    exports.
-    config.
-    linuxTerminal = {
-      default: "XTerm",
-      enum: [
-        "XTerm",
-        "GNOME Terminal",
-        "Konsole",
-        "xfce4-terminal",
-        "pantheon-terminal",
-        "URxvt",
-        "MATE Terminal"
-      ],
-      title: "Linux terminal",
-      type: "string"
-    };
+  exports.
+  config.
+  linuxTerminal = {
+    default: "XTerm",
+    enum: [
+      "XTerm",
+      "GNOME Terminal",
+      "Konsole",
+      "xfce4-terminal",
+      "pantheon-terminal",
+      "URxvt",
+      "MATE Terminal"
+    ],
+    title: "Linux terminal",
+    type: "string"
+  };
 }
 
 function debug(...args) {
@@ -137,10 +139,10 @@ function getFileType(ext) {
     }
   } else {
     return atom.
-      workspace.
-      getActiveTextEditor().
-      getGrammar().
-      name;
+    workspace.
+    getActiveTextEditor().
+    getGrammar().
+    name;
   }
 }
 
@@ -159,10 +161,10 @@ function getFilePath() {
   debug("getFilePath()");
 
   return atom.
-    workspace.
-    getActiveTextEditor().
-    buffer.
-    file;
+  workspace.
+  getActiveTextEditor().
+  buffer.
+  file;
 }
 
 function getArgs(files, output, fileType, extraArgs) {
@@ -172,6 +174,17 @@ function getArgs(files, output, fileType, extraArgs) {
   if (!extraArgs) {
     extraArgs = [];
   }
+  let compilerOptions = getExtraArgsFromInput();
+
+  if (!compilerOptions) {
+    compilerOptions = atom.config.
+    // string of all user-defined options
+    get(`gpp-compiler.c${fileType === "C++" ? "pp" : ""}CompilerOptions`).
+    // turn that string into an array separated by spaces
+    split(" ").
+    // remove falsy elements
+    filter(Boolean);
+  }
 
   // array of arguments to pass to the compiler
   const args = [
@@ -179,14 +192,7 @@ function getArgs(files, output, fileType, extraArgs) {
     ...files,
     "-o",
     output,
-    ...atom.
-      config.
-      // string of all user-defined options
-      get(`gpp-compiler.c${fileType === "C++" ? "pp" : ""}CompilerOptions`).
-      // turn that string into an array separated by spaces
-      split(" ").
-      // remove falsy elements
-      filter(Boolean)
+    ...compilerOptions
   ];
 
   debug("compiler args", args);
@@ -204,6 +210,52 @@ function getCompiledPath(dir, base) {
   }
 }
 
+function getExtraArgsFromInput() {
+  if (checkIfExtraArgsInputExists()) {
+    const compilerOptionInput = document.getElementById("compilerOptionInput");
+
+    if (compilerOptionInput) {
+      const compilerOptions = compilerOptionInput.innerText.trim();
+
+      return compilerOptions.length === 0 ? false : compilerOptions.split(" ");
+    }
+  }
+
+  return false;
+}
+
+function checkIfExtraArgsInputExists(needHide) {
+  const bottomPanels = atom.workspace.getBottomPanels();
+
+  for (let i = bottomPanels.length; i-- > 0;) {
+    //  Checking if there is a panel with the id: compilerOptionInput
+    if (bottomPanels[i].item && bottomPanels[i].item.id === "compilerOptionInput" && bottomPanels[i].isVisible()) {
+      if (needHide) {
+        // Hiding the curently active panel
+        bottomPanels[i].hide();
+      }
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function openExtraArgsInput() {
+  const compilerOptionInput = document.createElement("atom-text-editor");
+
+  compilerOptionInput.id = "compilerOptionInput";
+  compilerOptionInput.setAttribute("mini", "");
+
+  // Using the compilerOptionInput element to create a bottomPanel
+  const panel = atom.workspace.addBottomPanel({
+    item: compilerOptionInput
+  });
+
+  panel.show();
+}
+
 function compileFile(fileType, gdb) {
   debug("compileFile()", fileType, gdb);
 
@@ -215,13 +267,9 @@ function compileFile(fileType, gdb) {
 
     compile(getCommand(fileType), info, getArgs([
       filePath
-    ], getCompiledPath(info.dir, info.name), fileType, gdb ? [
-      "-g"
-    ] : null), gdb);
+    ], getCompiledPath(info.dir, info.name), fileType, gdb ? ["-g"] : null), gdb);
   } else {
-    atom.
-      notifications.
-      addError("<strong>File not found.</strong><br/>Save before compiling.");
+    atom.notifications.addError("<strong>File not found.</strong><br/>Save before compiling.");
   }
 }
 
@@ -232,10 +280,10 @@ function treeCompile(e, gdb) {
   const names = Array.from(document.querySelectorAll(".tree-view .file.selected > .name"));
   // array of files to compile
   const files = names.
-    // remove elements that are not of instance HTMLElement
-    filter((name) => name instanceof HTMLElement).
-    // replace all elements with their attribute `data-path`
-    map((element) => element.getAttribute("data-path"));
+  // remove elements that are not of instance HTMLElement
+  filter((name) => name instanceof HTMLElement).
+  // replace all elements with their attribute `data-path`
+  map((element) => element.getAttribute("data-path"));
 
   // file right clicked on
   let element = e.target;
@@ -258,9 +306,7 @@ function compile(command, info, args, gdb) {
   debug("compile()", command, info, args, gdb);
   debug("config", atom.config.get("gpp-compiler"));
 
-  const editor = atom.
-    workspace.
-    getActiveTextEditor();
+  const editor = atom.workspace.getActiveTextEditor();
 
   // if the user has a text editor open, save it
   if (editor) {
@@ -279,12 +325,12 @@ function compile(command, info, args, gdb) {
   let stderr = "";
 
   child.
-    stderr.
-    on("data", (data) => {
-      stderr += data;
+  stderr.
+  on("data", (data) => {
+    stderr += data;
 
-      debug("stderr", data.toString());
-    });
+    debug("stderr", data.toString());
+  });
   // callback when the child's stdio streams close
   child.on("close", (code) => {
     debug("exit code", code);
@@ -292,8 +338,8 @@ function compile(command, info, args, gdb) {
     // if the exit code is a non-zero status, alert the user stderr
     if (code) {
       atom.
-        notifications.
-        addError(stderr.replace(/\n/g, "<br/>"));
+      notifications.
+      addError(stderr.replace(/\n/g, "<br/>"));
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
         fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
@@ -316,9 +362,7 @@ function compile(command, info, args, gdb) {
         if (process.platform === "linux") {
           // if the platform is linux, spawn the program in the user set
           // terminal
-          const terminal = atom.
-            config.
-            get("gpp-compiler.linuxTerminal");
+          const terminal = atom.config.get("gpp-compiler.linuxTerminal");
           const file = getCompiledPath(info.dir, info.name);
 
           let terminalCommand = null;
@@ -354,36 +398,22 @@ function compile(command, info, args, gdb) {
               break;
             case "pantheon-terminal":
               terminalCommand = "pantheon-terminal";
-              args = [
-                "-e"
-              ];
+              args = ["-e"];
 
               break;
             case "URxvt":
               terminalCommand = "urxvt";
-              args = [
-                ...(gdb ? [] : [
-                  "-hold"
-                ]),
-                "-e"
-              ];
+              args = [...(gdb ? [] : ["-hold"]), "-e"];
 
               break;
             case "MATE Terminal":
               terminalCommand = "mate-terminal";
-              args = [
-                "--command"
-              ];
+              args = ["--command"];
 
               break;
             default:
               terminalCommand = "xterm";
-              args = [
-                ...(gdb ? [] : [
-                  "-hold"
-                ]),
-                "-e"
-              ];
+              args = [...(gdb ? [] : ["-hold"]), "-e"];
           }
 
           debug("command", terminalCommand, args, gdb, file, options);
@@ -415,9 +445,7 @@ function compile(command, info, args, gdb) {
       } else {
         // if the user doesn't want the program to run after compilation, give
         // them an alert telling them it was successful
-        atom.
-          notifications.
-          addSuccess("Compilation Successful");
+        atom.notifications.addSuccess("Compilation Successful");
       }
 
       // since the compilation was successful, remove `compiling_error.txt` if
