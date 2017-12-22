@@ -1,3 +1,6 @@
+## 3.0.8 -- accelerator's fork
+* Added a more accessible input for the compiler options.
+
 ## 3.0.7
 * Added support for MATE Terminal.
 

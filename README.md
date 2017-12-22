@@ -6,6 +6,8 @@ To compile C or C++, press <kbd>F5</kbd> or right click the file in tree view an
 
 To compile C or C++ and attach the GNU Debugger, press <kbd>F6</kbd> or right click the file in tree view and click `Compile and Debug`.
 
+This fork add a more accessible input for the compiler options.
+
 ## Dependencies
 
 This package relies on a C / C++ compiler (gcc).
