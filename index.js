@@ -46,7 +46,7 @@ module.exports = {
     },
     debug: {
       default: false,
-      description: "Logs function calls in console.",
+      description: "Logs function calls in console",
       title: "Debug Mode",
       type: "boolean"
     },
@@ -70,7 +70,7 @@ module.exports = {
     },
     showWarnings: {
       default: true,
-      description: "Show compile warnings.",
+      description: "Show compile warnings",
       title: "Show Warnings",
       type: "boolean"
     },
@@ -115,6 +115,15 @@ if (process.platform === "linux") {
       ],
       title: "Linux terminal",
       type: "string"
+    };
+  module.
+    exports.
+    config.
+    suspendShellAfterRun = {
+      default: true,
+      title: "Suspend terminal after running the program",
+      description: "Keep the terminal window open after the program has exited (for terminals like GNOME Terminal)",
+      type: "boolean"
     };
 }
 
@@ -253,6 +262,12 @@ function treeCompile(e, gdb) {
   ] : null), gdb);
 }
 
+const suspendScript = `echo "
+------------------------------------
+The command exited with status $?.
+Press any key to close the terminal.";
+stty -icanon; dd ibs=1 count=1 >/dev/null 2>&1`;
+
 // spawn the compiler to compile files and optionally run the compiled files
 function compile(command, info, args, gdb) {
   debug("compile()", command, info, args, gdb);
@@ -320,9 +335,11 @@ function compile(command, info, args, gdb) {
             config.
             get("gpp-compiler.linuxTerminal");
           const file = getCompiledPath(info.dir, info.name);
+          const suspend = atom.config.get("gpp-compiler.suspendShellAfterRun");
 
           let terminalCommand = null;
           let args = null;
+          let toRun = (suspend ? `bash -c '${file}; ${suspendScript}'` : file);
 
           switch (terminal) {
             case "GNOME Terminal":
@@ -386,14 +403,14 @@ function compile(command, info, args, gdb) {
               ];
           }
 
-          debug("command", terminalCommand, args, gdb, file, options);
+          debug("command", terminalCommand, args, gdb, toRun, options);
           child_process.spawn(terminalCommand, [
             ...args,
             // is there a better one-liner than this?
             ...(gdb ? [
               "gdb"
             ] : []),
-            file
+            toRun
           ], options);
         } else if (process.platform === "win32") {
           // if the platform is Windows, run start (which is a shell builtin, so

@@ -1,5 +1,5 @@
 {
-  "atom-text-editor": {
+  "atom-text-editor[data-grammar~=\"c\"], atom-text-editor[data-grammar~=\"cpp\"]": {
     "f5": "gpp-compiler:compile",
     "f6": "gpp-compiler:gdb"
   }
