@@ -33,6 +33,8 @@ For Arch-based distros, run `sudo pacman -S gcc`.
 
 You'll need to install [MinGW](http://www.mingw.org/) and [add it to your PATH](http://www.howtogeek.com/118594/how-to-edit-your-system-path-for-easy-command-line-access/).
 
+**Make sure to restart Atom after adding it to your PATH**
+
 ### Mac
 
 You'll need to install [XCode](https://developer.apple.com/xcode/).
