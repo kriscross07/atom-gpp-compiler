@@ -116,6 +116,20 @@ if (process.platform === "linux") {
       title: "Linux terminal",
       type: "string"
     };
+} else if (process.platform === "darwin") {
+  module.
+    exports.
+    config.
+    macTerminal = {
+      default: "Terminal",
+      enum : [
+        "Terminal",
+        "Hyper",
+        "iTerm2"
+      ],
+      title: "Mac terminal",
+      type: "string"
+    };
 }
 
 function debug(...args) {
@@ -405,11 +419,41 @@ function compile(command, info, args, gdb) {
           debug("command", command);
           child_process.exec(command, options);
         } else if (process.platform === "darwin") {
-          // if the platform is mac, spawn open, which does the same thing as
-          // Windows' start, but is not a builtin, so we can child_process.spawn
-          // it
+          // if the platform is Mac, spawn open with the user set
+          // terminal as an argument
+          const terminal = atom.
+            config.
+            get("gpp-compiler.macTerminal");
+          const file = getCompiledPath(info.dir, info.name);
+
+          let terminalType = null;
+
+          switch (terminal) {
+            case "Terminal":
+              terminalType = "Terminal";
+
+              break;
+            case "Hyper":
+              terminalType = "Hyper";
+
+              break;
+            case "iTerm2":
+              terminalType = "iTerm";
+
+              break;
+            default:
+              terminalType = "Terminal";
+          }
           child_process.spawn("open", [
-            getCompiledPath(info.dir, info.name)
+            ...[
+              "-a",
+              terminalType
+            ],
+            // these arguments make sure it opens in Terminal
+            ...(gdb ? [
+              "gdb"
+            ] : []),
+            file
           ], options);
         }
       } else {
