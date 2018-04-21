@@ -400,7 +400,7 @@ function compile(command, info, args, gdb) {
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
           const file = getCompiledPath(info.dir, info.name);
-          const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
+          const command = `start "${info.name}" cmd /C "${gdb ? "gdb " : ""}${file} ${gdb ? "" : "& echo. & pause"}`;
 
           debug("command", command);
           child_process.exec(command, options);
