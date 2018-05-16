@@ -243,6 +243,11 @@ function compileFile(fileType, gdb) {
       const res = [];
       let i = 0;
 
+      // check if compilerInfos exists
+      if (!fs.existsSync(optionsPath)) {
+        atom.notifications.addError("<strong>Use Multifile Compiling option</strong> is on<br/> create the file <strong>compilerInfos</strong> next to your main before compiling");
+      }
+
       // get all files to add in compile command
       lineReader.on("line", (line) => {
         // we don't take the first line, for now it is just "file :", could add other options later if necessary
