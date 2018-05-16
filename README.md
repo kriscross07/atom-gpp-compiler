@@ -1,3 +1,17 @@
+# new features, to edit
+
+Added 2 features : -An option to choose the output directory (the directory where the executable is generated) 
+                   -A check button in the options to read the file "compilerInfos" in the project root, this file should have this structure:
+
+```
+files:
+  example1.cpp (<- no matter if it is tabulation or spaces)
+  example2.c
+  ...
+```
+
+this allow user for one project in particular to add some sources he wants to the project and to chose the output directory making the management of "bigger" c/c++ projects easier.
+
 # gpp-compiler
 
 This Atom package allows you to compile and run C++ and C within the editor.
