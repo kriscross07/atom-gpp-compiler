@@ -37,19 +37,6 @@ You'll need to install [MinGW](http://www.mingw.org/) and [add it to your PATH](
 
 You'll need to install [XCode](https://developer.apple.com/xcode/).
 
-## new features (to edit)
-
-Added 2 features : An option to choose the output directory (the directory where the executable is generated) and a check button in the options to read the file "compilerInfos" in the project root, this file should have this structure:
-
-```
-files:
-  example1.cpp (<- no matter if it is tabulation or spaces)
-  example2.c
-  ...
-```
-
-this allow user for one project in particular to add some sources he wants to the project and to chose the output directory making the management of "bigger" c/c++ projects easier.
-
 ## Contributing
 
 <!-- i did not test this "guide", so it may not work perfectly -->
@@ -70,3 +57,4 @@ git commit -m "added a feature"
 git push
 # go to https://github.com/<your username>/atom-gpp-compiler.git and click `Create Pull Request`
 ```
+
