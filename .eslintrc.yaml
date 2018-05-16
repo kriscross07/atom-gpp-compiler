@@ -1,4 +1,4 @@
-extends: 
+extends:
   - eslint:all
 parserOptions:
   ecmaVersion: 6
