@@ -37,10 +37,9 @@ You'll need to install [MinGW](http://www.mingw.org/) and [add it to your PATH](
 
 You'll need to install [XCode](https://developer.apple.com/xcode/).
 
-## new features, to edit
+## new features (to edit)
 
-Added 2 features : -An option to choose the output directory (the directory where the executable is generated) 
-                   -A check button in the options to read the file "compilerInfos" in the project root, this file should have this structure:
+Added 2 features : An option to choose the output directory (the directory where the executable is generated) and a check button in the options to read the file "compilerInfos" in the project root, this file should have this structure:
 
 ```
 files:
