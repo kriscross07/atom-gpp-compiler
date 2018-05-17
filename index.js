@@ -1,10 +1,12 @@
 /* global atom */
 "use strict";
 
+
 const child_process = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
+const readLine = require("readline");
 // const {CompositeDisposable} = require("atom");
 const CompositeDisposable = require("atom").CompositeDisposable;
 
@@ -44,6 +46,12 @@ module.exports = {
       title: "Add `compiling_error.txt`",
       type: "boolean"
     },
+    useMultifileCompiling: {
+      default: false,
+      description: "Read the <strong>compilerInfos</Strong> file in the main folder and add the listed sources to the compiler command.",
+      title: "Use multifile compiling options",
+      type: "boolean"
+    },
     debug: {
       default: false,
       description: "Logs function calls in console.",
@@ -77,6 +85,12 @@ module.exports = {
     cCompiler: {
       default: "gcc",
       title: "C Compiler",
+      type: "string"
+    },
+    compileDirectory: {
+      default: "",
+      description: "Directory of the executable output",
+      title: "Output directory",
       type: "string"
     },
     cppCompiler: {
@@ -212,12 +226,82 @@ function compileFile(fileType, gdb) {
   if (file) {
     const filePath = file.path;
     const info = path.parse(filePath);
+    let optionsPath = "";
 
-    compile(getCommand(fileType), info, getArgs([
-      filePath
-    ], getCompiledPath(info.dir, info.name), fileType, gdb ? [
-      "-g"
-    ] : null), gdb);
+    // if user wants to choose sources to compile
+    if (atom.config.get("gpp-compiler.useMultifileCompiling")) {
+      // get config file path
+      optionsPath = info.dir;
+      optionsPath += "/compilerInfos";
+
+      // init line reader
+      const lineReader = readLine.createInterface({
+        input: fs.createReadStream(optionsPath)
+      });
+
+      // source files in this array
+      const res = [];
+      let i = 0;
+
+      // check if compilerInfos exists
+      if (!fs.existsSync(optionsPath)) {
+        atom.notifications.addError("<strong>Use Multifile Compiling option</strong> is on<br/> create the file <strong>compilerInfos</strong> next to your main before compiling");
+      }
+
+      // get all files to add in compile command
+      lineReader.on("line", (line) => {
+        // we don't take the first line, for now it is just "file :", could add other options later if necessary
+        if (i > 0) {
+          let temp = line;
+
+          // get rid of spaces and tabulations
+          temp = temp.replace(" ", "");
+          temp = temp.replace(" ", "");
+
+          // add to array
+          res.push(temp);
+        }
+        i++;
+      });
+
+      // when all lines are red
+      lineReader.on("close", () => {
+        // find the compile path
+        let compilePath = "";
+
+        if (atom.config.get("gpp-compiler.compileDirectory") === "") {
+          compilePath = getCompiledPath(info.dir, info.name);
+        } else {
+          compilePath = getCompiledPath(atom.config.get("gpp-compiler.compileDirectory"), info.name);
+        }
+
+        // generate args with the new path
+        const args = getArgs([filePath], compilePath, fileType, gdb ? ["-g"] : null);
+
+        // add the additionnal sources to the args
+        for (const r of res) {
+          args.push(r);
+        }
+
+        // compile
+        compile(getCommand(fileType), info, args, gdb);
+      });
+    } else {
+      // find the compile path
+      let compilePath = "";
+
+      if (atom.config.get("gpp-compiler.compileDirectory") === "") {
+        compilePath = getCompiledPath(info.dir, info.name);
+      } else {
+        compilePath = getCompiledPath(atom.config.get("gpp-compiler.compileDirectory"), info.name);
+      }
+
+      // set the args with the new path
+      const args = getArgs([filePath], compilePath, fileType, gdb ? ["-g"] : null);
+
+      // compile
+      compile(getCommand(fileType), info, args, gdb);
+    }
   } else {
     atom.
       notifications.
@@ -319,7 +403,15 @@ function compile(command, info, args, gdb) {
           const terminal = atom.
             config.
             get("gpp-compiler.linuxTerminal");
-          const file = getCompiledPath(info.dir, info.name);
+
+          // find the executable path
+          let file = "";
+
+          if (atom.config.get("gpp-compiler.compileDirectory") === "") {
+            file = getCompiledPath(info.dir, info.name);
+          } else {
+            file = getCompiledPath(atom.config.get("gpp-compiler.compileDirectory"), info.name);
+          }
 
           let terminalCommand = null;
           let args = null;
@@ -399,7 +491,16 @@ function compile(command, info, args, gdb) {
           // if the platform is Windows, run start (which is a shell builtin, so
           // we can't use child_process.spawn), which spawns a new instance of
           // cmd to run the program
-          const file = getCompiledPath(info.dir, info.name);
+
+          // find the executable path
+          let file = "";
+
+          if (atom.config.get("gpp-compiler.compileDirectory") === "") {
+            file = getCompiledPath(info.dir, info.name);
+          } else {
+            file = getCompiledPath(atom.config.get("gpp-compiler.compileDirectory"), info.name);
+          }
+
           const command = `start "${info.name}" cmd /C "${gdb ? "gdb" : ""} ${file} ${gdb ? "" : "& echo. & pause"}`;
 
           debug("command", command);
@@ -408,8 +509,18 @@ function compile(command, info, args, gdb) {
           // if the platform is mac, spawn open, which does the same thing as
           // Windows' start, but is not a builtin, so we can child_process.spawn
           // it
+
+          // find the executable path
+          let file = "";
+
+          if (atom.config.get("gpp-compiler.compileDirectory") === "") {
+            file = getCompiledPath(info.dir, info.name);
+          } else {
+            file = getCompiledPath(atom.config.get("gpp-compiler.compileDirectory"), info.name);
+          }
+
           child_process.spawn("open", [
-            getCompiledPath(info.dir, info.name)
+            file
           ], options);
         }
       } else {
