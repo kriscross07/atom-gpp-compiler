@@ -294,10 +294,12 @@ function compile(command, info, args, gdb) {
       atom.
         notifications.
         addError(stderr.replace(/\n/g, "<br/>"));
-
-      if (atom.config.get("gpp-compiler.addCompilingErr")) {
-        fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
-      }
+      // this will remove "Uncaught Callback must be a function" 
+      try {
+        if (atom.config.get("gpp-compiler.addCompilingErr")) {
+          fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
+        }
+      } catch (error){}
     } else {
       // compilation was successful, but there still may be warnings
       if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
