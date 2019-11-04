@@ -30,6 +30,6 @@
     "test": "eslint index.js"
   },
   "devDependencies": {
-    "eslint": "3.0.1"
+    "eslint": "6.6.0"
   }
 }
