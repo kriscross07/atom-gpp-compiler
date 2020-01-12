@@ -1,0 +1,895 @@
+import math
+a_is_known = False
+ans_a = input('Is side a known? ')
+if ans_a == 'Yes' or ans_a == 'Y' or ans_a == 'yes' or ans_a == 'YES' or ans_a == 'y':
+    a_is_known = True
+if a_is_known:
+    a = float(input('Side a is: '))
+    b_is_known = False
+    ans_b = input('Is side b known? ')
+    if ans_b == 'Yes' or ans_b == 'Y' or ans_b == 'yes' or ans_b == 'YES' or ans_b == 'y':
+        b_is_known = True
+    if b_is_known:
+        b = float(input('Side b is: '))
+        c_is_known = False
+        ans_c = input('Is side c known? ')
+        if ans_c == 'Yes' or ans_c == 'Y' or ans_c == 'yes' or ans_c == 'YES' or ans_c == 'y':
+            c_is_known = True
+        if c_is_known:
+            c = float(input('Side c is: '))
+            if not a + b > c and a + c > b and b + c > a:
+                print("Error!")
+            else:
+                A = 180 * math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c)) / math.pi
+                B = 180 * math.acos((a ** 2 - b ** 2 + c ** 2) / (2 * a * c)) / math.pi
+                C = 180 * math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b)) / math.pi
+                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                R = c / (2 * math.sin(C))
+                P = a + b + c
+                S = a * b * c / (4 * R)
+                ha = 2 * S / a
+                hb = 2 * S / b
+                hc = 2 * S / c
+                la = 2 * b * c * math.cos(90 * A / math.pi) / (b + c)
+                lb = 2 * a * c * math.cos(90 * B / math.pi) / (a + c)
+                lc = 2 * a * b * math.cos(90 * C / math.pi) / (a + b)
+                print(f'A = {round(A, 3)}°\nB = {round(B, 3)}°\nC = {round(C, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+        else:
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                R = a / (2 * math.sin(A))
+                if round(math.sin(A), 15) == round(a / b, 15) or a >= b:
+                    B = math.asin(b * math.sin(A) / a)
+                    C = math.pi - A - B
+                    c = a * math.sin(C) / math.sin(A)
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    print(f'B = {round(180 * B / math.pi, 3)}°\nC = {round(180 * C / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    if round(math.sin(A), 15) > round(a / b, 15):
+                        print('Wrong input!')
+                    else:
+                        B_is_known = False
+                        ans_B = input('Is angle B known? ')
+                        if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                            B_is_known = True
+                        if B_is_known:
+                            B = float(input('Angle B in degrees is: '))
+                            B = math.pi * B / 180
+                            C = math.pi - A - B
+                            c = math.sin(C) * a / math.sin(A)
+                            S = a * b * c / (4 * R)
+                            P = a + b + c
+                            ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                            mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                            mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                            ha = 2 * S / a
+                            hb = 2 * S / b
+                            hc = 2 * S / c
+                            la = 2 * b * c * math.cos(A / 2) / (b + c)
+                            lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                            lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                            print(f'C = {round(180 * C / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                        else:
+                            C_is_known = False
+                            ans_C = input('Is angle C known? ')
+                            if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                                C_is_known = True
+                            if C_is_known:
+                                C = float(input('Angle C in degrees is: '))
+                                C = math.pi * C / 180
+                                c = math.sqrt(a ** 2 + b ** 2 - 2 * a * b * math.cos(C))
+                                B = math.pi - A - C
+                                S = a * b * c / (4 * R)
+                                P = a + b + c
+                                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                                ha = 2 * S / a
+                                hb = 2 * S / b
+                                hc = 2 * S / c
+                                la = 2 * b * c * math.cos(A / 2) / (b + c)
+                                lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                                lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                                print(f'B = {round(180 * B / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                            else:
+                                c1 = b * math.cos(A) + math.sqrt(a ** 2 - b ** 2 * math.sin(A) ** 2)
+                                P1 = a + b + c1
+                                c2 = b * math.cos(A) - math.sqrt(a ** 2 - b ** 2 * math.sin(A) ** 2)
+                                P2 = a + b + c2
+                                C1 = math.acos((a ** 2 + b ** 2 - c1 ** 2) / (2 * a * b))
+                                C2 = math.acos((a ** 2 + b ** 2 - c2 ** 2) / (2 * a * b))
+                                B1 = math.pi - A - C1
+                                B2 = math.pi - A - C2
+                                ma1 = math.sqrt((2 * (b ** 2 + c1 ** 2) - a ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a ** 2 + c1 ** 2) - b ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a ** 2 + b ** 2) - c1 ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b ** 2 + c2 ** 2) - a ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a ** 2 + c2 ** 2) - b ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a ** 2 + b ** 2) - c2 ** 2)) / 2
+                                la1 = 2 * b * c1 * math.cos(A / 2) / (b + c1)
+                                lb1 = 2 * a * c1 * math.cos(B1 / 2) / (a + c1)
+                                lc1 = 2 * a * b * math.cos(C1 / 2) / (a + b)
+                                la2 = 2 * b * c2 * math.cos(A / 2) / (b + c2)
+                                lb2 = 2 * a * c2 * math.cos(B2 / 2) / (a + c2)
+                                lc2 = 2 * a * b * math.cos(C2 / 2) / (a + b)
+                                S1 = a * b * c1 / (4 * R)
+                                S2 = a * b * c2 / (4 * R)
+                                ha1 = 2 * S1 / a
+                                hb1 = 2 * S1 / b
+                                hc = b * math.sin(A)
+                                ha2 = 2 * S2 / a
+                                hb2 = 2 * S2 / b
+                                print(f'B1 = {round(180 * B1 / math.pi, 3)}°\nC1 = {round(180 * C1 / math.pi, 3)}°\nc1 = {round(c1, 3)}\nP1 = {round(P1, 3)}\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha1 = {round(ha1, 3)}, hb1 = {round(hb1, 3)}, hc = {round(hc, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nB2 = {round(180 * B2 / math.pi, 3)}°\nC2 = {round(180 * C2 / math.pi, 3)}°\nc2 = {round(c2, 3)}\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha2 = {round(ha2, 3)}, hb2 = {round(hb2, 3)}, hc = {round(hc, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    R = b / (2 * math.sin(B))
+                    if round(math.sin(B), 15) == round(b / a, 15) or b >= a:
+                        A = math.asin(a * math.sin(B) / b)
+                        C = math.pi - A - B
+                        c = a * math.sin(C) / math.sin(A)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\nC = {round(180 * C / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        if round(math.sin(B), 15) > round(b / a, 15):
+                            print('Wrong input!')
+                        else:
+                            C_is_known = False
+                            ans_C = input('Is angle C known? ')
+                            if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                                C_is_known = True
+                            if C_is_known:
+                                C = float(input('Angle C in degrees is: '))
+                                C = math.pi * C / 180
+                                c = math.sqrt(a ** 2 + b ** 2 - 2 * a * b * math.cos(C))
+                                A = math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))
+                                B = math.pi - A - C
+                                S = a * b * c / (4 * R)
+                                P = a + b + c
+                                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                                ha = 2 * S / a
+                                hb = 2 * S / b
+                                hc = 2 * S / c
+                                la = 2 * b * c * math.cos(A / 2) / (b + c)
+                                lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                                lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                                print(f'A = {round(180 * A / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                            else:
+                                c1 = a * math.cos(B) + math.sqrt(b ** 2 - a ** 2 * math.sin(B) ** 2)
+                                c2 = a * math.cos(B) - math.sqrt(b ** 2 - a ** 2 * math.sin(B) ** 2)
+                                C1 = math.acos((a ** 2 + b ** 2 - c1 ** 2) / (2 * a * b))
+                                C2 = math.acos((a ** 2 + b ** 2 - c2 ** 2) / (2 * a * b))
+                                A1 = math.pi - B - C1
+                                A2 = math.pi - B - C2
+                                ma1 = math.sqrt((2 * (b ** 2 + c1 ** 2) - a ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a ** 2 + c1 ** 2) - b ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a ** 2 + b ** 2) - c1 ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b ** 2 + c2 ** 2) - a ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a ** 2 + c2 ** 2) - b ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a ** 2 + b ** 2) - c2 ** 2)) / 2
+                                la1 = 2 * b * c1 * math.cos(A1 / 2) / (b + c1)
+                                lb1 = 2 * a * c1 * math.cos(B / 2) / (a + c1)
+                                lc1 = 2 * a * b * math.cos(C1 / 2) / (a + b)
+                                la2 = 2 * b * c2 * math.cos(A2 / 2) / (b + c2)
+                                lb2 = 2 * a * c2 * math.cos(B / 2) / (a + c2)
+                                lc2 = 2 * a * b * math.cos(C2 / 2) / (a + b)
+                                P1 = a + b + c1
+                                P2 = a + b + c2
+                                S1 = a * b * c1 / (4 * R)
+                                S2 = a * b * c2 / (4 * R)
+                                ha1 = 2 * S1 / a
+                                hb1 = 2 * S1 / b
+                                hc = a * math.sin(B)
+                                ha2 = 2 * S2 / a
+                                hb2 = 2 * S2 / b
+                                print(f'A1 = {round(180 * A1 / math.pi, 3)}°\nC1 = {round(180 * C1 / math.pi, 3)}°\nc1 = {round(c1, 3)}\nP1 = {round(P1, 3)}\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha1 = {round(ha1, 3)}, hb1 = {round(hb1, 3)}, hc = {round(hc, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nA2 = {round(180 * A2 / math.pi, 3)}°\nC2 = {round(180 * C2 / math.pi, 3)}°\nc2 = {round(c2, 3)}\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha2 = {round(ha2, 3)}, hb2 = {round(hb2, 3)}, hc = {round(hc, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        c = math.sqrt(a ** 2 + b ** 2 - 2 * a * b * math.cos(C))
+                        A = math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))
+                        B = math.pi - A - C
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        R = c / (2 * math.sin(C))
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\nB = {round(180 * B / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+    else:
+        c_is_known = False
+        ans_c = input('Is side c known? ')
+        if ans_c == 'Yes' or ans_c == 'Y' or ans_c == 'yes' or ans_c == 'YES' or ans_c == 'y':
+            c_is_known = True
+        if c_is_known:
+            c = float(input('Side c is: '))
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                R = a / (2 * math.sin(A))
+                if round(math.sin(A), 15) == round(a / c, 15) or a >= c:
+                    C = math.asin(c * math.sin(A) / a)
+                    B = math.pi - A - C
+                    b = a * math.sin(B)/math.sin(A)
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    R = c / (2 * math.sin(C))
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    print(f'B = {round(180 * B / math.pi, 3)}°\nb = {round(b, 3)}\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    if round(math.sin(A), 15) > round(a / c, 15):
+                        print('Wrong input!')
+                    else:
+                        B_is_known = False
+                        ans_B = input('Is angle B known? ')
+                        if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                            B_is_known = True
+                        if B_is_known:
+                            B = float(input('Angle B in degrees is: '))
+                            B = math.pi * B / 180
+                            C = math.pi - A - B
+                            b = math.sqrt(a ** 2 + c ** 2 - 2 * a * c * math.cos(B))
+                            ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                            mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                            mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                            R = c / (2 * math.sin(C))
+                            P = a + b + c
+                            S = a * b * c / (4 * R)
+                            ha = 2 * S / a
+                            hb = 2 * S / b
+                            hc = 2 * S / c
+                            la = 2 * b * c * math.cos(A / 2) / (b + c)
+                            lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                            lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                            print(f'b = {round(b, 3)}\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                        else:
+                            C_is_known = False
+                            ans_C = input('Is angle C known? ')
+                            if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                                C_is_known = True
+                            if C_is_known:
+                                C = float(input('Angle C in degrees is: '))
+                                C = math.pi * C / 180
+                                B = math.pi - A - C
+                                b = math.sqrt(a ** 2 + c ** 2 - 2 * a * c * math.cos(B))
+                                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                                R = c / (2 * math.sin(C))
+                                P = a + b + c
+                                S = a * b * c / (4 * R)
+                                ha = 2 * S / a
+                                hb = 2 * S / b
+                                hc = 2 * S / c
+                                la = 2 * b * c * math.cos(A / 2) / (b + c)
+                                lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                                lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                                print(f'B = {round(180 * B / math.pi, 3)}°\nb = {round(b, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                            else:
+                                b1 = c * math.cos(A) + math.sqrt(a ** 2 - c ** 2 * math.sin(A) ** 2)
+                                b2 = c * math.cos(A) - math.sqrt(a ** 2 - c ** 2 * math.sin(A) ** 2)
+                                B1 = math.acos((a ** 2 - b1 ** 2 + c ** 2) / (2 * a * c))
+                                B2 = math.acos((a ** 2 - b2 ** 2 + c ** 2) / (2 * a * c))
+                                C1 = math.pi - A - B1
+                                C2 = math.pi - A - B2
+                                ma1 = math.sqrt((2 * (b1 ** 2 + c ** 2) - a ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a ** 2 + c ** 2) - b1 ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a ** 2 + b1 ** 2) - c ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b2 ** 2 + c ** 2) - a ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a ** 2 + c ** 2) - b2 ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a ** 2 + b2 ** 2) - c ** 2)) / 2
+                                la1 = 2 * b1 * c * math.cos(A / 2) / (b1 + c)
+                                lb1 = 2 * a * c * math.cos(B1 / 2) / (a + c)
+                                lc1 = 2 * a * b1 * math.cos(C1 / 2) / (a + b1)
+                                la2 = 2 * b2 * c * math.cos(A / 2) / (b2 + c)
+                                lb2 = 2 * a * c * math.cos(B2 / 2) / (a + c)
+                                lc2 = 2 * a * b2 * math.cos(C2 / 2) / (a + b2)
+                                P1 = a + b1 + c
+                                P2 = a + b2 + c
+                                S1 = a * b1 * c / (4 * R)
+                                S2 = a * b2 * c / (4 * R)
+                                hb = c * math.sin(A)
+                                ha1 = 2 * S1 / a
+                                hc1 = 2 * S1 / c
+                                ha2 = 2 * S2 / a
+                                hc2 = 2 * S2 / c
+                                print(f'B1 = {round(180 * B1 / math.pi, 3)}°\nb1 = {round(b1, 3)}\nC1 = {round(180 * C1 / math.pi, 3)}°\nP1 = {round(P1, 3)}\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha1 = {round(ha1, 3)}, hb = {round(hb, 3)}, hc1 = {round(hc1, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nB2 = {round(180 * B2 / math.pi, 3)}°\nb2 = {round(b2, 3)}\nC2 = {round(180 * C2 / math.pi, 3)}°\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha2 = {round(ha2, 3)}, hb = {round(hb, 3)}, hc2 = {round(hc2, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    b = math.sqrt(a ** 2 + c ** 2 - 2 * a * c * math.cos(B))
+                    A = math.acos((b ** 2 + c ** 2 - a ** 2) / (2 * b * c))
+                    C = math.pi - A - B
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    R = c / (2 * math.sin(C))
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    print(f'A = {round(180 * A / math.pi, 3)}°\nb = {round(b, 3)}\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        R = c / (2 * math.sin(C))
+                        if round(math.sin(C), 15) == round(c / a, 15) or c >= a:
+                            A = math.asin(a * math.sin(C) / c)
+                            B = math.pi - A - C
+                            b = c * math.sin(B) / math.sin(C)
+                            ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                            mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                            mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                            P = a + b + c
+                            S = a * b * c / (4 * R)
+                            ha = 2 * S / a
+                            hb = 2 * S / b
+                            hc = 2 * S / c
+                            la = 2 * b * c * math.cos(A / 2) / (b + c)
+                            lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                            lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                            print(f'A = {round(180 * A / math.pi, 3)}°\nB = {round(180 * B / math.pi, 3)}°\nb = {round(b, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                        else:
+                            if round(math.sin(C), 15) > round(c / a, 15):
+                                print('Wrong input!')
+                            else:
+                                b1 = a * math.cos(C) + math.sqrt(c ** 2 - a ** 2 * math.sin(C) ** 2)
+                                b2 = a * math.cos(C) - math.sqrt(c ** 2 - a ** 2 * math.sin(C) ** 2)
+                                B1 = math.acos((a ** 2 - b1 ** 2 + c ** 2) / (2 * a * c))
+                                B2 = math.acos((a ** 2 - b2 ** 2 + c ** 2) / (2 * a * c))
+                                A1 = math.pi - B1 - C
+                                A2 = math.pi - B2 - C
+                                ma1 = math.sqrt((2 * (b1 ** 2 + c ** 2) - a ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a ** 2 + c ** 2) - b1 ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a ** 2 + b1 ** 2) - c ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b2 ** 2 + c ** 2) - a ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a ** 2 + c ** 2) - b2 ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a ** 2 + b2 ** 2) - c ** 2)) / 2
+                                la1 = 2 * b1 * c * math.cos(A1 / 2) / (b1 + c)
+                                lb1 = 2 * a * c * math.cos(B1 / 2) / (a + c)
+                                lc1 = 2 * a * b1 * math.cos(C / 2) / (a + b1)
+                                la2 = 2 * b2 * c * math.cos(A2 / 2) / (b2 + c)
+                                lb2 = 2 * a * c * math.cos(B2 / 2) / (a + c)
+                                lc2 = 2 * a * b2 * math.cos(C / 2) / (a + b2)
+                                P1 = a + b1 + c
+                                P2 = a + b2 + c
+                                S1 = a * b1 * c / (4 * R)
+                                S2 = a * b2 * c / (4 * R)
+                                hb = a * math.sin(C)
+                                ha1 = 2 * S1 / a
+                                hc1 = 2 * S1 / c
+                                ha2 = 2 * S2 / a
+                                hc2 = 2 * S2 / c
+                                print(f'A1 = {round(180 * A1 / math.pi, 3)}\nB1 = {round(180 * B1 / math.pi, 3)}\nb1 = {round(b1, 3)}\nP1 = {round(P1, 3)}:.3f\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha1 = {round(ha1, 3)}, hb = {round(hb, 3)}, hc1 = {round(hc1, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nA2 = {round(180 * A2 / math.pi, 3)}\nB2 = {round(180 * B2 / math.pi, 3)}\nb2 = {round(b2, 3)}\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha2 = {round(ha2, 3)}, hb = {round(hb, 3)}, hc2 = {round(hc2, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+                    else:
+                        print('Not enough data!')
+        else:
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                R = a / (2 * math.sin(A))
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    b = a * math.sin(B) / math.sin(A)
+                    C = math.pi - A - B
+                    c = a * math.sin(C) / math.sin(A)
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    print(f'b = {round(b, 3)}\nC = {round(180 * C / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        B = math.pi - A - C
+                        b = a * math.sin(B) / math.sin(A)
+                        c = a * math.sin(C) / math.sin(A)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'B = {round(180 * B / math.pi, 3)}°\nb = {round(b, 3)}\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        A = math.pi - B - C
+                        b = a * math.sin(B) / math.sin(A)
+                        c = a * math.sin(C) / math.sin(A)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        R = c / (2 * math.sin(C))
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\nb = {round(b, 3)}\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+                else:
+                    print('Not enough data!')
+else:
+    b_is_known = False
+    ans_b = input('Is side b known? ')
+    if ans_b == 'Yes' or ans_b == 'Y' or ans_b == 'yes' or ans_b == 'YES' or ans_b == 'y':
+        b_is_known = True
+    if b_is_known:
+        b = float(input('Side b is: '))
+        c_is_known = False
+        ans_c = input('Is side c known? ')
+        if ans_c == 'Yes' or ans_c == 'Y' or ans_c == 'yes' or ans_c == 'YES' or ans_c == 'y':
+            c_is_known = True
+        if c_is_known:
+            c = float(input('Side c is: '))
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                a = math.sqrt(b ** 2 + c ** 2 - 2 * b * c * math.cos(A))
+                B = math.acos((a ** 2 - b ** 2 + c ** 2) / (2 * a * c))
+                C = math.acos((a ** 2 + b ** 2 - c ** 2) / (2 * a * b))
+                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                R = c / (2 * math.sin(C))
+                P = a + b + c
+                S = a * b * c / (4 * R)
+                ha = 2 * S / a
+                hb = 2 * S / b
+                hc = 2 * S / c
+                la = 2 * b * c * math.cos(A / 2) / (b + c)
+                lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                print(f'a = {round(a, 3)}\nB = {round(180 * B / math.pi, 3)}°\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    R = b / (2 * math.sin(B))
+                    if round(math.sin(B), 15) == round(b / c, 15) or b >= c:
+                        C = math.asin(c * math.sin(B) / b)
+                        A = math.pi - B - C
+                        a = b * math.sin(A) / math.sin(B)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\na = {round(a, 3)}\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        if round(math.sin(B), 15) > round(b / c, 15):
+                            print('Wrong input!')
+                        else:
+                            C_is_known = False
+                            ans_C = input('Is angle C known? ')
+                            if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                                C_is_known = True
+                            if C_is_known:
+                                C = float(input('Angle C in degrees is: '))
+                                C = math.pi * C / 180
+                                A = math.pi - B - C
+                                a = b * math.sin(A) / math.sin(B)
+                                ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                                mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                                mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                                P = a + b + c
+                                S = a * b * c / (4 * R)
+                                ha = 2 * S / a
+                                hb = 2 * S / b
+                                hc = 2 * S / c
+                                la = 2 * b * c * math.cos(A / 2) / (b + c)
+                                lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                                lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                                print(f'A = {round(180 * A / math.pi, 3)}°\na = {round(a, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                            else:
+                                a1 = c * math.cos(B) + math.sqrt(b ** 2 - c ** 2 * math.sin(B) ** 2)
+                                a2 = c * math.cos(B) - math.sqrt(b ** 2 - c ** 2 * math.sin(B) ** 2)
+                                A1 = math.acos((b ** 2 + c ** 2 - a1 ** 2) / (2 * b * c))
+                                A2 = math.acos((b ** 2 + c ** 2 - a2 ** 2) / (2 * b * c))
+                                C1 = math.pi - A1 - B
+                                C2 = math.pi - A2 - B
+                                ma1 = math.sqrt((2 * (b ** 2 + c ** 2) - a1 ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a1 ** 2 + c ** 2) - b ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a1 ** 2 + b ** 2) - c ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b ** 2 + c ** 2) - a2 ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a2 ** 2 + c ** 2) - b ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a2 ** 2 + b ** 2) - c ** 2)) / 2
+                                la1 = 2 * b * c * math.cos(A1 / 2) / (b + c)
+                                lb1 = 2 * a1 * c * math.cos(B / 2) / (a1 + c)
+                                lc1 = 2 * a1 * b * math.cos(C1 / 2) / (a1 + b)
+                                la2 = 2 * b * c * math.cos(A2 / 2) / (b + c)
+                                lb2 = 2 * a2 * c * math.cos(B / 2) / (a2 + c)
+                                lc2 = 2 * a2 * b * math.cos(C2 / 2) / (a2 + b)
+                                P1 = a1 + b + c
+                                P2 = a2 + b + c
+                                S1 = a1 * b * c / (4 * R)
+                                S2 = a2 * b * c / (4 * R)
+                                ha = c * math.sin(B)
+                                hb1 = 2 * S1 / b
+                                hc1 = 2 * S1 / c
+                                hb2 = 2 * S2 / b
+                                hc2 = 2 * S2 / c
+                                print(f'A1 = {round(180 * A1 / math.pi, 3)}°\na1 = {round(a1, 3)}\nC1 = {round(180 * C1 / math.pi, 3)}°\nP1 = {round(P1, 3)}\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha = {round(ha, 3)}, hb1 = {round(hb1, 3)}, hc1 = {round(hc1, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nA2 = {round(180 * A2 / math.pi, 3)}°\na2 = {round(a2, 3)}\nC2 = {round(180 * C2 / math.pi, 3)}°\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha = {round(ha, 3)}, hb2 = {round(hb2, 3)}, hc2 = {round(hc2, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        R = c / (2 * math.sin(C))
+                        if round(math.sin(C), 15) == round(b / c, 15) or c > b:
+                            B = math.asin(b * math.sin(C) / c)
+                            A = math.pi - B - C
+                            a = c * math.sin(A) / math.sin(C)
+                            ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                            mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                            mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                            P = a + b + c
+                            S = a * b * c / (4 * R)
+                            ha = 2 * S / a
+                            hb = 2 * S / b
+                            hc = 2 * S / c
+                            la = 2 * b * c * math.cos(A / 2) / (b + c)
+                            lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                            lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                            print(f'A = {round(180 * A / math.pi, 3)}°\na = {round(a, 3)}\nB = {round(180 * B / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                        else:
+                            if round(math.sin(C), 15) > round(c / b, 15):
+                                print('Wrong input!')
+                            else:
+                                a1 = b * math.cos(C) + math.sqrt(c ** 2 - b ** 2 * math.sin(C) ** 2)
+                                a2 = b * math.cos(C) - math.sqrt(c ** 2 - b ** 2 * math.sin(C) ** 2)
+                                A1 = math.acos((b ** 2 + c ** 2 - a1 ** 2) / (2 * b * c))
+                                A2 = math.acos((b ** 2 + c ** 2 - a2 ** 2) / (2 * b * c))
+                                B1 = math.pi - A1 - C
+                                B2 = math.pi - A2 - C
+                                ma1 = math.sqrt((2 * (b ** 2 + c ** 2) - a1 ** 2)) / 2
+                                mb1 = math.sqrt((2 * (a1 ** 2 + c ** 2) - b ** 2)) / 2
+                                mc1 = math.sqrt((2 * (a1 ** 2 + b ** 2) - c ** 2)) / 2
+                                ma2 = math.sqrt((2 * (b ** 2 + c ** 2) - a2 ** 2)) / 2
+                                mb2 = math.sqrt((2 * (a2 ** 2 + c ** 2) - b ** 2)) / 2
+                                mc2 = math.sqrt((2 * (a2 ** 2 + b ** 2) - c ** 2)) / 2
+                                la1 = 2 * b * c * math.cos(A1 / 2) / (b + c)
+                                lb1 = 2 * a1 * c * math.cos(B1 / 2) / (a1 + c)
+                                lc1 = 2 * a1 * b * math.cos(C / 2) / (a1 + b)
+                                la2 = 2 * b * c * math.cos(A2 / 2) / (b + c)
+                                lb2 = 2 * a2 * c * math.cos(B2 / 2) / (a2 + c)
+                                lc2 = 2 * a2 * b * math.cos(C / 2) / (a2 + b)
+                                P1 = a1 + b + c
+                                P2 = a2 + b + c
+                                S1 = a1 * b * c / (4 * R)
+                                S2 = a2 * b * c / (4 * R)
+                                ha = b * math.sin(C)
+                                hb1 = 2 * S1 / b
+                                hc1 = 2 * S1 / c
+                                hb2 = 2 * S2 / b
+                                hc2 = 2 * S2 / c
+                                print(f'A1 = {round(180 * A1 / math.pi, 3)}°\na1 = {round(a1, 3)}\nB1 = {round(180 * B1 / math.pi, 3)}°\nP1 = {round(P1, 3)}\nS1 = {round(S1, 3)}\nma1 = {round(ma1, 3)}, mb1 = {round(mb1, 3)}, mc1 = {round(mc1, 3)}\nla1 = {round(la1, 3)}, lb1 = {round(lb1, 3)}, lc1 = {round(lc1, 3)}\nha = {round(ha, 3)}, hb1 = {round(hb1, 3)}, hc1 = {round(hc1, 3)}\nr1 = {round(2 * S1 / P1, 3)}\nA2 = {round(180 * A2 / math.pi, 3)}°\na2 = {round(a2, 3)}\nB2 = {round(180 * B2 / math.pi, 3)}°\nP2 = {round(P2, 3)}\nS2 = {round(S2, 3)}\nma2 = {round(ma2, 3)}, mb2 = {round(mb2, 3)}, mc2 = {round(mc2, 3)}\nla2 = {round(la2, 3)}, lb2 = {round(lb2, 3)}, lc2 = {round(lc2, 3)}\nha = {round(ha, 3)}, hb2 = {round(hb2, 3)}, hc2 = {round(hc2, 3)}\nr2 = {round(2 * S2 / P2, 3)}\nR = {round(R, 3)}')
+                    else:
+                        print('Not enough data!')
+        else:
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    C = math.pi - A - B
+                    a = b * math.sin(A) / math.sin(B)
+                    c = b*math.sin(C)/math.sin(B)
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    R = c / (2 * math.sin(C))
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    print(f'a = {round(a, 3)}\nC = {round(180 * C / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        a = b * math.sin(A) / math.sin(A + C)
+                        B = math.pi - A - C
+                        c = b * math.sin(C) / math.sin(B)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        R = c / (2 * math.sin(C))
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'a = {round(a, 3)}\nB = {round(180 * B / math.pi, 3)}°\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    R = b / (2 * math.sin(B))
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        A = math.pi - B - C
+                        a = b * math.sin(A) / math.sin(B)
+                        c = b * math.sin(C) / math.sin(B)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\na = {round(a, 3)}\nc = {round(c, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+                else:
+                    print('Not enough data!')
+    else:
+        c_is_known = False
+        ans_c = input('Is side c known? ')
+        if ans_c == 'Yes' or ans_c == 'Y' or ans_c == 'yes' or ans_c == 'YES' or ans_c == 'y':
+            c_is_known = True
+        if c_is_known:
+            c = float(input('Side c is: '))
+            A_is_known = False
+            ans_A = input('Is angle A known? ')
+            if ans_A == 'Yes' or ans_A == 'Y' or ans_A == 'yes' or ans_A == 'YES' or ans_A == 'y':
+                A_is_known = True
+            if A_is_known:
+                A = float(input('Angle A in degrees is: '))
+                A = math.pi * A / 180
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    C = math.pi - A - B
+                    a = c * math.sin(A) / math.sin(C)
+                    b = c * math.sin(B) / math.sin(C)
+                    ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                    mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                    mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                    R = c / (2 * math.sin(C))
+                    P = a + b + c
+                    S = a * b * c / (4 * R)
+                    ha = 2 * S / a
+                    hb = 2 * S / b
+                    hc = 2 * S / c
+                    la = 2 * b * c * math.cos(A / 2) / (b + c)
+                    lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                    lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                    print(f'a = {round(a, 3)}\nb = {round(b, 3)}\nC = {round(180 * C / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                else:
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        a = c * math.sin(A) / math.sin(math.pi * C / 180)
+                        B = math.pi - A - C
+                        b = c * math.sin(B) / math.sin(C)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        R = c / (2 * math.sin(C))
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'a = {round(a, 3)}\nb = {round(b, 3)}\nB = {round(180 * B / math.pi, 3)}°\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+            else:
+                B_is_known = False
+                ans_B = input('Is angle B known? ')
+                if ans_B == 'Yes' or ans_B == 'Y' or ans_B == 'yes' or ans_B == 'YES' or ans_B == 'y':
+                    B_is_known = True
+                if B_is_known:
+                    B = float(input('Angle B in degrees is: '))
+                    B = math.pi * B / 180
+                    C_is_known = False
+                    ans_C = input('Is angle C known? ')
+                    if ans_C == 'Yes' or ans_C == 'Y' or ans_C == 'yes' or ans_C == 'YES' or ans_C == 'y':
+                        C_is_known = True
+                    if C_is_known:
+                        C = float(input('Angle C in degrees is: '))
+                        C = math.pi * C / 180
+                        A = math.pi - B - C
+                        a = c * math.sin(A) / math.sin(C)
+                        b = c * math.sin(B) / math.sin(C)
+                        ma = math.sqrt((2 * (b ** 2 + c ** 2) - a ** 2)) / 2
+                        mb = math.sqrt((2 * (a ** 2 + c ** 2) - b ** 2)) / 2
+                        mc = math.sqrt((2 * (a ** 2 + b ** 2) - c ** 2)) / 2
+                        R = c / (2 * math.sin(C))
+                        P = a + b + c
+                        S = a * b * c / (4 * R)
+                        ha = 2 * S / a
+                        hb = 2 * S / b
+                        hc = 2 * S / c
+                        la = 2 * b * c * math.cos(A / 2) / (b + c)
+                        lb = 2 * a * c * math.cos(B / 2) / (a + c)
+                        lc = 2 * a * b * math.cos(C / 2) / (a + b)
+                        print(f'A = {round(180 * A / math.pi, 3)}°\na = {round(a, 3)}\nb = {round(b, 3)}\nP = {round(P, 3)}\nS = {round(S, 3)}\nma = {round(ma, 3)}, mb = {round(mb, 3)}, mc = {round(mc, 3)}\nla = {round(la, 3)}, lb = {round(lb, 3)}, lc = {round(lc, 3)}\nha = {round(ha, 3)}, hb = {round(hb, 3)}, hc = {round(hc, 3)}\nR = {round(R, 3)}\nr = {round(2 * S / P, 3)}')
+                    else:
+                        print('Not enough data!')
+                else:
+                    print('Not enough data!')
+        else:
+            print('Not enough data!')
