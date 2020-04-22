@@ -35,7 +35,7 @@
 		},
 		config: {
 			addCompilingErr: {
-				default: false,
+				default: true,
 				description: "Add a file named `compiling_error.txt` if compiling goes wrong",
 				title: "Add `compiling_error.txt`",
 				type: "boolean"
@@ -290,11 +290,16 @@
 				atom.
 				notifications.
 				addError(stderr.replace(/\n/g, "<br/>"));
-				//----------------------ERROR
+
 				if (atom.config.get("gpp-compiler.addCompilingErr")) {
-					fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
+					fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr,  (stderr) => {
+						if (stderr) {
+							atom.
+							notifications.
+							addWarning(stderr.replace(/\n/g, "<br/>"));
+						}
+					});
 				}
-				//-------------------------------------------------------------------------
 			} else {
 				// compilation was successful, but there still may be warnings
 				if (stderr && atom.config.get("gpp-compiler.showWarnings")) {
@@ -421,7 +426,13 @@
 				// it exists
 				fs.stat(path.join(info.dir, "compiling_error.txt"), (err) => {
 					if (!err) {
-						fs.unlink(path.join(info.dir, "compiling_error.txt"));
+						fs.unlink(path.join(info.dir, "compiling_error.txt"), (err) => {
+							if (err) {
+								atom.
+								notifications.
+								addWarning(stderr.replace(/\n/g, "<br/>")); 
+							}
+						});
 					}
 				});
 			}
