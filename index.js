@@ -296,7 +296,7 @@ function compile(command, info, args, gdb) {
         addError(stderr.replace(/\n/g, "<br/>"));
 
       if (atom.config.get("gpp-compiler.addCompilingErr")) {
-        fs.writeFile(path.join(info.dir, "compiling_error.txt"), stderr);
+        fs.writeFileSync(path.join(info.dir, "compiling_error.txt"), stderr);
       }
     } else {
       // compilation was successful, but there still may be warnings
@@ -424,7 +424,7 @@ function compile(command, info, args, gdb) {
       // it exists
       fs.stat(path.join(info.dir, "compiling_error.txt"), (err) => {
         if (!err) {
-          fs.unlink(path.join(info.dir, "compiling_error.txt"));
+          fs.unlinkSync(path.join(info.dir, "compiling_error.txt"));
         }
       });
     }
